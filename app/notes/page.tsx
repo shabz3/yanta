@@ -1,16 +1,18 @@
 import Table from "../components/table/Table";
-import moment from "moment";
-import notes from "@/test-data.json";
+// import getData from "./GetJsonData"
 
-export interface Note {
-  id: number;
-  title: string;
-  description: string;
-  "date-created": string;
+async function getData() {
+  const res = await fetch("http://localhost:3000/api/notes");
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
 }
 
-export default function Notes() {
-  let formatted_data: Note[] = notes.notes;
+export default async function Notes() {
+  const data = await getData();
 
   const columns = [
     {
@@ -26,9 +28,10 @@ export default function Notes() {
       label: "Creation Date",
     },
   ];
+  console.log(data.notes);
   return (
     <div>
-      <Table columns={columns} rows={formatted_data} />
+      <Table columns={columns} rows={data.notes} />
     </div>
   );
 }

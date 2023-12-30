@@ -8,13 +8,19 @@ import {
   TableCell,
   getKeyValue,
 } from "@nextui-org/react";
-import { Note } from "@/app/notes/page";
 import moment from "moment";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { revalidatePath } from 'next/cache'
 
 interface Column {
   key: string;
   label: string;
+}
+export interface Note {
+  id: number;
+  title: string;
+  description: string;
+  "date-created": string;
 }
 
 const formatDatesInRows = (rows: Note[]) => {
@@ -38,9 +44,11 @@ export default function App({
   rows: Note[];
 }) {
   const formattedRows = formatDatesInRows(rows);
-  const { push } = useRouter();
+  const router = useRouter()
+
+
   const handleRowAction = (key: string | number | bigint) => {
-    push(`${window.location.href}/note?${key}`);
+    router.push(`${window.location.href}/${key}`);
   };
 
   return (

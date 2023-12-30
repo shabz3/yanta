@@ -12,7 +12,6 @@ import { usePathname } from "next/navigation";
 
 export default function NavBar() {
   const currentRoute = usePathname();
-  console.log(currentRoute);
 
   return (
     <Navbar
