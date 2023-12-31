@@ -46,6 +46,7 @@ export default function Card({ note }: { note: number }) {
       throw new Error("Failed to update note");
     } else {
       router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/notes`);
+      // need refresh with push to update new note
       router.refresh();
     }
   }

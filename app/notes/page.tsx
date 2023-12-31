@@ -1,5 +1,5 @@
-import Table from "../components/table/Table";
 // import getData from "./GetJsonData"
+import Table from "../components/table/Table2"
 
 async function getData() {
   const res = await fetch("http://localhost:3000/api/notes");
@@ -27,6 +27,10 @@ export default async function Notes() {
       key: "date-created",
       label: "Creation Date",
     },
+    {
+      key: "actions",
+      label: "Actions"
+    }
   ];
   console.log(data.notes);
   return (

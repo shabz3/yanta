@@ -25,6 +25,7 @@ export async function POST(request: Request) {
   };
   if (updatedData !== notesData) {
     console.log("revalidating...")
+    // I dont think this works (have to refresh to see changes)
     revalidatePath('/notes')
   }
   fs.writeFile(fileName, JSON.stringify(updatedData, null, 2));
