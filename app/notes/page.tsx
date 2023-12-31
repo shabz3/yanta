@@ -1,5 +1,5 @@
 // import getData from "./GetJsonData"
-import Table from "../components/table/Table2"
+import Table from "../components/table/Table"
 
 async function getData() {
   const res = await fetch("http://localhost:3000/api/notes");
