@@ -2,9 +2,8 @@
 import Table from "../components/table/Table"
 
 async function getData() {
-  const res = await fetch("http://localhost:3000/api/notes");
+  const res = await fetch("http://localhost:3000/api/notes", { cache: 'no-store' });
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
   }
 
@@ -13,6 +12,7 @@ async function getData() {
 
 export default async function Notes() {
   const data = await getData();
+  // console.log(data.notes);
 
   const columns = [
     {
@@ -32,7 +32,6 @@ export default async function Notes() {
       label: "Actions"
     }
   ];
-  console.log(data.notes);
   return (
     <div>
       <Table columns={columns} rows={data.notes} />

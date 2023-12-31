@@ -1,124 +1,124 @@
 {
-  "notes": [
-    {
-      "id": 1,
-      "title": "Grocery List",
-      "description": "fvdfs",
-      "date-created": "2023-12-15T15:30:15.000Z"
-    },
-    {
-      "id": 2,
-      "title": "Workout Routine",
-      "description": "fddffd",
-      "date-created": "2023-12-14T09:00:00.000Z"
-    },
-    {
-      "id": 3,
-      "title": "Meeting Agenda",
-      "description": "abc",
-      "date-created": "2023-12-13T13:45:00.000Z"
-    },
-    {
-      "id": 4,
-      "title": "Book Recommendations",
-      "description": "4422",
-      "date-created": "2023-12-12T18:20:00.000Z"
-    },
-    {
-      "id": 5,
-      "title": "Travel Itinerary",
-      "description": "Flight details, hotel reservation",
-      "date-created": "2023-12-11T10:30:00.000Z"
-    },
-    {
-      "id": 6,
-      "title": "Project To-Do List",
-      "description": "Tasks, deadlines",
-      "date-created": "2023-12-10T14:15:00.000Z"
-    },
-    {
-      "id": 7,
-      "title": "Recipe Collection",
-      "description": "Pasta, Salad, Dessert",
-      "date-created": "2023-12-09T16:50:00.000Z"
-    },
-    {
-      "id": 8,
-      "title": "Home Improvement Ideas",
-      "description": "Paint walls, redecorate living room",
-      "date-created": "2023-12-08T08:00:00.000Z"
-    },
-    {
-      "id": 9,
-      "title": "Music Playlist",
-      "description": "Jazz, Pop, Classical",
-      "date-created": "2023-12-07T11:30:00.000Z"
-    },
-    {
-      "id": 10,
-      "title": "Birthday Gift Ideas",
-      "description": "Books, Perfume, Gadgets",
-      "date-created": "2023-12-06T17:20:00.000Z"
-    },
-    {
-      "id": 11,
-      "title": "Study Plan",
-      "description": "Review materials, practice tests",
-      "date-created": "2023-12-05T09:45:00.000Z"
-    },
-    {
-      "id": 12,
-      "title": "Budget Planning",
-      "description": "Income, expenses, savings",
-      "date-created": "2023-12-04T12:10:00.000Z"
-    },
-    {
-      "id": 13,
-      "title": "Gardening To-Do List",
-      "description": "Plant flowers, trim bushes",
-      "date-created": "2023-12-03T15:00:00.000Z"
-    },
-    {
-      "id": 14,
-      "title": "Movie Watchlist",
-      "description": "Drama, Thriller, Comedy",
-      "date-created": "2023-12-02T19:30:00.000Z"
-    },
-    {
-      "id": 15,
-      "title": "Gift Shopping List",
-      "description": "Family, friends",
-      "date-created": "2023-12-01T22:05:00.000Z"
-    },
-    {
-      "id": 16,
-      "title": "Tech Gadgets Wishlist",
-      "description": "Smartphone, Laptop, Smartwatch",
-      "date-created": "2023-11-30T07:40:00.000Z"
-    },
-    {
-      "id": 17,
-      "title": "Health Goals",
-      "description": "Exercise, Healthy eating",
-      "date-created": "2023-11-29T14:00:00.000Z"
-    },
-    {
-      "id": 18,
-      "title": "Journal Entries",
-      "description": "Reflections, thoughts",
-      "date-created": "2023-11-28T16:55:00.000Z"
-    },
-    {
-      "id": 19,
-      "title": "Event Planning",
-      "description": "Venue, guest list",
-      "date-created": "2023-11-27T11:20:00.000Z"
-    },
-    {
-      "id": 20,
-      "title": "New Year's Resolutions",
-      "description": "Goals for the upcoming year",
-      "date-created": "2023-11-26T09:00:00.000Z"
-    }
-  ]
+    "notes": [
+        {
+            "id": 1,
+            "title": "Grocery List",
+            "description": "Eggs, Milk, Ice Cream",
+            "date-created": "2023-12-15T15:30:15.000Z"
+        },
+        {
+            "id": 2,
+            "title": "Workout Routine",
+            "description": "30 min cardio, 20 min weightlifting",
+            "date-created": "2023-12-14T09:00:00.000Z"
+        },
+        {
+            "id": 3,
+            "title": "Meeting Agenda",
+            "description": "Discuss project milestones",
+            "date-created": "2023-12-13T13:45:00.000Z"
+        },
+        {
+            "id": 4,
+            "title": "Book Recommendations",
+            "description": "Crime and Punishment, To Kill a Mockingbird",
+            "date-created": "2023-12-12T18:20:00.000Z"
+        },
+        {
+            "id": 5,
+            "title": "Travel Itinerary",
+            "description": "Flight details, hotel reservation",
+            "date-created": "2023-12-11T10:30:00.000Z"
+        },
+        {
+            "id": 6,
+            "title": "Project To-Do List",
+            "description": "Tasks, deadlines",
+            "date-created": "2023-12-10T14:15:00.000Z"
+        },
+        {
+            "id": 7,
+            "title": "Recipe Collection",
+            "description": "Pasta, Salad, Dessert",
+            "date-created": "2023-12-09T16:50:00.000Z"
+        },
+        {
+            "id": 8,
+            "title": "Home Improvement Ideas",
+            "description": "Paint walls, redecorate living room",
+            "date-created": "2023-12-08T08:00:00.000Z"
+        },
+        {
+            "id": 9,
+            "title": "Music Playlist",
+            "description": "Jazz, Pop, Classical",
+            "date-created": "2023-12-07T11:30:00.000Z"
+        },
+        {
+            "id": 10,
+            "title": "Birthday Gift Ideas",
+            "description": "Books, Perfume, Gadgets",
+            "date-created": "2023-12-06T17:20:00.000Z"
+        },
+        {
+            "id": 11,
+            "title": "Study Plan",
+            "description": "Review materials, practice tests",
+            "date-created": "2023-12-05T09:45:00.000Z"
+        },
+        {
+            "id": 12,
+            "title": "Budget Planning",
+            "description": "Income, expenses, savings",
+            "date-created": "2023-12-04T12:10:00.000Z"
+        },
+        {
+            "id": 13,
+            "title": "Gardening To-Do List",
+            "description": "Plant flowers, trim bushes",
+            "date-created": "2023-12-03T15:00:00.000Z"
+        },
+        {
+            "id": 14,
+            "title": "Movie Watchlist",
+            "description": "Drama, Thriller, Comedy",
+            "date-created": "2023-12-02T19:30:00.000Z"
+        },
+        {
+            "id": 15,
+            "title": "Gift Shopping List",
+            "description": "Family, friends",
+            "date-created": "2023-12-01T22:05:00.000Z"
+        },
+        {
+            "id": 16,
+            "title": "Tech Gadgets Wishlist",
+            "description": "Smartphone, Laptop, Smartwatch",
+            "date-created": "2023-11-30T07:40:00.000Z"
+        },
+        {
+            "id": 17,
+            "title": "Health Goals",
+            "description": "Exercise, Healthy eating",
+            "date-created": "2023-11-29T14:00:00.000Z"
+        },
+        {
+            "id": 18,
+            "title": "Journal Entries",
+            "description": "Reflections, thoughts",
+            "date-created": "2023-11-28T16:55:00.000Z"
+        },
+        {
+            "id": 19,
+            "title": "Event Planning",
+            "description": "Venue, guest list",
+            "date-created": "2023-11-27T11:20:00.000Z"
+        },
+        {
+            "id": 20,
+            "title": "New Year's Resolutions",
+            "description": "Goals for the upcoming year",
+            "date-created": "2023-11-26T09:00:00.000Z"
+        }
+    ]
 }

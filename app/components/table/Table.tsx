@@ -47,22 +47,23 @@ export default function App({
   columns: Column[];
   rows: Note[];
 }) {
+  const router = useRouter();
+  const formattedRows = formatDatesInRows(rows);
+
   async function deleteNote(noteId: number) {
-    const router = useRouter();
     const response = await fetch(`../api/notes/delete`, {
       method: "DELETE",
       body: JSON.stringify({
-        noteId
+        noteId,
       }),
     });
     if (!response.ok) {
       throw new Error("Failed to update note");
-    } else {
-      router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/notes`);
-      // need refresh with push to update new note
-      router.refresh();
     }
+    router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/notes`);
+    router.refresh();
   }
+
   const renderCell = React.useCallback((note: Note, columnKey: React.Key) => {
     const cellValue = note[columnKey as keyof Note];
 
@@ -87,12 +88,14 @@ export default function App({
           <div className="relative flex items-center gap-2">
             <Tooltip content="Edit note">
               <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon/>
+                <EditIcon />
               </span>
             </Tooltip>
             <Tooltip color="danger" content="Delete note">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon onClick={deleteNote} noteId={noteId}/>
+                <div onClick={() => deleteNote(noteId)}>
+                  <DeleteIcon />
+                </div>
               </span>
             </Tooltip>
           </div>
@@ -101,7 +104,6 @@ export default function App({
         return cellValue;
     }
   }, []);
-  const formattedRows = formatDatesInRows(rows);
 
   return (
     <Table aria-label="Notes table">
