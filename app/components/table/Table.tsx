@@ -13,6 +13,7 @@ import { EditIcon } from "./EditIcon";
 import { DeleteIcon } from "./DeleteIcon";
 import { Link } from "@nextui-org/react";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 
 interface Column {
   key: string;
@@ -46,6 +47,22 @@ export default function App({
   columns: Column[];
   rows: Note[];
 }) {
+  async function deleteNote(noteId: number) {
+    const router = useRouter();
+    const response = await fetch(`../api/notes/delete`, {
+      method: "DELETE",
+      body: JSON.stringify({
+        noteId
+      }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to update note");
+    } else {
+      router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/notes`);
+      // need refresh with push to update new note
+      router.refresh();
+    }
+  }
   const renderCell = React.useCallback((note: Note, columnKey: React.Key) => {
     const cellValue = note[columnKey as keyof Note];
 
@@ -70,12 +87,12 @@ export default function App({
           <div className="relative flex items-center gap-2">
             <Tooltip content="Edit note">
               <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
+                <EditIcon/>
               </span>
             </Tooltip>
             <Tooltip color="danger" content="Delete note">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
+                <DeleteIcon onClick={deleteNote} noteId={noteId}/>
               </span>
             </Tooltip>
           </div>
