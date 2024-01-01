@@ -15,9 +15,10 @@ async function getData() {
 
 export default async function Notes() {
   const data = await getData();
+  // sort notes in latest created order
   data.notes.sort((a: Note, b: Note) => {
-    const dateA = new Date(a["date-created"]).getTime();
-    const dateB = new Date(b["date-created"]).getTime();
+    const dateA = new Date(a["last-updated"]).getTime();
+    const dateB = new Date(b["last-updated"]).getTime();
 
     return dateB - dateA;
   });
@@ -33,8 +34,8 @@ export default async function Notes() {
       label: "Brief Description",
     },
     {
-      key: "date-created",
-      label: "Creation Date",
+      key: "last-updated",
+      label: "Last Updated",
     },
     {
       key: "actions",

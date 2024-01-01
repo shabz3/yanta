@@ -36,7 +36,7 @@ export default function NewNote({
         noteId: newNoteId,
         title,
         description,
-        "date-created": currentDate,
+        "last-updated": currentDate,
       }),
     });
     if (!response.ok) {

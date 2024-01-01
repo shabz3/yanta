@@ -1,45 +1,51 @@
 "use client";
 
-import { Textarea } from "@nextui-org/react";
-import { Spacer } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import {
+  Textarea,
+  Card,
+  CardHeader,
+  Spacer,
+  CardBody,
+  CardFooter,
+} from "@nextui-org/react";
+import { use, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { Button } from "@nextui-org/react";
 import data from "@/test-data.json";
 import { useRouter } from "next/navigation";
+import { Note } from "../table/Table";
 
-export default function Card({ note }: { note: number }) {
-  const [title, setTitle] = useState(data.notes[note - 1].title);
-  const [description, setDescription] = useState(
-    data.notes[note - 1].description
-  );
+export default function SingleCard({ noteId }: { noteId: string }) {
+  const notesData = data.notes;
+  const singleNote =
+    notesData[notesData.findIndex((object) => object.id === noteId)];
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true);
+  useEffect(() => {
+    setTitle(singleNote.title);
+    setDescription(singleNote.description);
+  }, []);
+  useEffect(() => {
+    if (title !== singleNote.title || description !== singleNote.description) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [title, description]);
+
   const router = useRouter();
-  let handleTitleChange = (event: any) => {
-    setTitle(event.target.value);
-  };
-
-  let handleDescriptionChange = (event: any) => {
-    setDescription(event.target.value);
-  };
-
-  const debouncedHandleTitleChange = useDebouncedCallback(
-    handleTitleChange,
-    300
-  );
-
-  const debouncedHandleDescriptionChange = useDebouncedCallback(
-    handleDescriptionChange,
-    300
-  );
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const dateNow = new Date().toISOString();
     const response = await fetch(`../api/notes/edit`, {
       method: "POST",
       body: JSON.stringify({
-        noteId: note,
+        noteId,
         title,
         description,
+        "last-updated": dateNow,
       }),
     });
     if (!response.ok) {
@@ -52,30 +58,32 @@ export default function Card({ note }: { note: number }) {
   }
 
   return (
-    <div className="flex grid gap-4">
-      <form onSubmit={handleSubmit}>
-        <div>
-          <Spacer x={4} />
+    <form onSubmit={handleSubmit}>
+      <Card>
+        <CardHeader className="mb-6">
           <Textarea
-            onChange={debouncedHandleTitleChange}
-            defaultValue={title}
+            onValueChange={setTitle}
+            value={title}
             variant="underlined"
-          >
-            {title}
-          </Textarea>
-          <Spacer x={4} />
+          />
+        </CardHeader>
+        <CardBody className="mb-6">
           <Textarea
-            onChange={debouncedHandleDescriptionChange}
+            onValueChange={setDescription}
             defaultValue={description}
-          >
-            {description}
-          </Textarea>
-          <Spacer x={4} />
-        </div>
-        <div>
-          <Button type="submit">Save</Button>
-        </div>
-      </form>
-    </div>
+            value={description}
+          />
+        </CardBody>
+        <CardFooter className="mb-6">
+          <Button color="danger" variant="ghost" onClick={() => router.back()}>
+            Cancel
+          </Button>
+          <Spacer x={10} />
+          <Button color="success" variant="ghost" type="submit">
+            Save
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 }

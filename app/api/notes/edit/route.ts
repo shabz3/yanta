@@ -18,15 +18,16 @@ export async function POST(request: Request) {
           ...element,
           title: data.title,
           description: data.description,
+          "last-updated": data["last-updated"],
         };
       }
       return element;
     }),
   };
   if (updatedData !== notesData) {
-    console.log("revalidating...")
+    console.log("revalidating...");
     // I dont think this works (have to refresh to see changes)
-    revalidatePath('/notes')
+    revalidatePath("/notes");
   }
   fs.writeFile(fileName, JSON.stringify(updatedData, null, 2));
   return new Response("Success", { status: 200 });

@@ -1,5 +1,4 @@
 import { promises as fs } from "fs";
-import { Note } from "../../../components/table/Table";
 import { revalidatePath } from "next/cache";
 import { createDecipheriv } from "crypto";
 
@@ -15,7 +14,7 @@ export async function POST(request: Request) {
     id: data.noteId,
     title: data.title,
     description: data.description,
-    "date-created": data["date-created"],
+    "last-updated": data["last-updated"],
   };
   notesData.push(newNote);
   console.log("newNote: ", newNote);

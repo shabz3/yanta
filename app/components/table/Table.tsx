@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -14,6 +14,7 @@ import { DeleteIcon } from "./DeleteIcon";
 import { Link } from "@nextui-org/react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Column {
   key: string;
@@ -21,21 +22,18 @@ interface Column {
 }
 
 export interface Note {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  "date-created": string;
+  "last-updated": string;
 }
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {
-    // Format the "date-created" field using Moment.js
-    const formattedDate = moment(row["date-created"], "YYYYMMDD").fromNow();
-
-    // Return the row object with updated date
+    const formattedDate = moment(row["last-updated"]).fromNow();
     return {
       ...row,
-      "date-created": formattedDate,
+      "last-updated": formattedDate,
     };
   });
 };
@@ -48,9 +46,19 @@ export default function App({
   rows: Note[];
 }) {
   const router = useRouter();
-  const formattedRows = formatDatesInRows(rows);
+  const [formattedRows, setFormattedRows] = useState([
+    {
+      id: "",
+      title: "",
+      description: "",
+      "last-updated": "",
+    },
+  ]);
+  useEffect(() => {
+    setFormattedRows(formatDatesInRows(rows));
+  }, [rows]);
 
-  async function deleteNote(noteId: number) {
+  async function deleteNote(noteId: string) {
     const response = await fetch(`../api/notes/delete`, {
       method: "DELETE",
       body: JSON.stringify({
@@ -69,19 +77,19 @@ export default function App({
     const noteId = note.id;
     const noteTitle = note.title;
     const noteDescription = note.description;
-    const noteCreated = note["date-created"];
+    const lastUpdated = note["last-updated"];
 
     switch (columnKey) {
       case "title":
         return (
-          <Link href={`/note/${noteId}`} color="foreground" underline="hover">
+          <Link href={`/notes/${noteId}`} color="foreground" underline="hover">
             {noteTitle}
           </Link>
         );
       case "description":
         return <p>{noteDescription}</p>;
-      case "date-created":
-        return <p>{noteCreated}</p>;
+      case "last-updated":
+        return <p>{lastUpdated}</p>;
       case "actions":
         return (
           <div className="relative flex items-center gap-2">

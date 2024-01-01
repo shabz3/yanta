@@ -1,5 +1,4 @@
 import { promises as fs } from "fs";
-import { Note } from "../../../components/table/Table";
 import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic"; // defaults to auto
