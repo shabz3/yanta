@@ -32,7 +32,7 @@ export default function Card({ note }: { note: number }) {
     300
   );
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const response = await fetch(`../api/notes/edit`, {
       method: "POST",

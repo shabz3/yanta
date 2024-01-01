@@ -60,7 +60,6 @@ export default function App({
     if (!response.ok) {
       throw new Error("Failed to update note");
     }
-    router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/notes`);
     router.refresh();
   }
 

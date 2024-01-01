@@ -1,9 +1,13 @@
-import React from 'react'
+"use client";
+import NewNote from "../../components/newNote/Card";
+import { useState, useEffect } from "react";
 
-function page() {
+
+export default function Page() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   return (
-    <div>page</div>
-  )
+    <NewNote title={title} description={description} setTitle={setTitle} setDescription={setDescription}/>
+  );
 }
-
-export default page

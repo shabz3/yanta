@@ -1,8 +1,11 @@
 // import getData from "./GetJsonData"
-import Table from "../components/table/Table"
+import Table from "../components/table/Table";
+import { Note } from "../components/table/Table";
 
 async function getData() {
-  const res = await fetch("http://localhost:3000/api/notes", { cache: 'no-store' });
+  const res = await fetch("http://localhost:3000/api/notes", {
+    cache: "no-store",
+  });
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -12,6 +15,12 @@ async function getData() {
 
 export default async function Notes() {
   const data = await getData();
+  data.notes.sort((a: Note, b: Note) => {
+    const dateA = new Date(a["date-created"]).getTime();
+    const dateB = new Date(b["date-created"]).getTime();
+
+    return dateB - dateA;
+  });
   // console.log(data.notes);
 
   const columns = [
@@ -29,8 +38,8 @@ export default async function Notes() {
     },
     {
       key: "actions",
-      label: "Actions"
-    }
+      label: "Actions",
+    },
   ];
   return (
     <div>
