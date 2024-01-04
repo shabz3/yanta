@@ -12,7 +12,7 @@ import {
 import { EditIcon } from "./EditIcon";
 import { DeleteIcon } from "./DeleteIcon";
 import { Link } from "@nextui-org/react";
-import moment from "moment";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -28,15 +28,7 @@ export interface Note {
   "last-updated": string;
 }
 
-const formatDatesInRows = (rows: Note[]) => {
-  return rows.map((row) => {
-    const formattedDate = moment(row["last-updated"]).fromNow();
-    return {
-      ...row,
-      "last-updated": formattedDate,
-    };
-  });
-};
+
 
 export default function App({
   columns,
@@ -46,17 +38,6 @@ export default function App({
   rows: Note[];
 }) {
   const router = useRouter();
-  const [formattedRows, setFormattedRows] = useState([
-    {
-      id: "",
-      title: "",
-      description: "",
-      "last-updated": "",
-    },
-  ]);
-  useEffect(() => {
-    setFormattedRows(formatDatesInRows(rows));
-  }, [rows]);
 
   async function deleteNote(noteId: string) {
     const response = await fetch(`../api/notes/delete`, {
@@ -93,11 +74,6 @@ export default function App({
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Edit note">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
-            </Tooltip>
             <Tooltip color="danger" content="Delete note">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
                 <div onClick={() => deleteNote(noteId)}>
@@ -124,7 +100,7 @@ export default function App({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={formattedRows}>
+      <TableBody items={rows}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

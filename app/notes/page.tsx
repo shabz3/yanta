@@ -1,17 +1,26 @@
 // import getData from "./GetJsonData"
 import Table from "../components/table/Table";
 import { Note } from "../components/table/Table";
+import moment from "moment";
 
 async function getData() {
-  const res = await fetch("http://localhost:3000/api/notes", {
-    cache: "no-store",
-  });
+  const res = await fetch("http://localhost:3000/api/notes");
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
 
   return res.json();
 }
+
+const formatDatesInRows = (rows: Note[]) => {
+  return rows.map((row) => {
+    const formattedDate = moment(row["last-updated"]).fromNow();
+    return {
+      ...row,
+      "last-updated": formattedDate,
+    };
+  });
+};
 
 export default async function Notes() {
   const data = await getData();
@@ -22,7 +31,7 @@ export default async function Notes() {
 
     return dateB - dateA;
   });
-  // console.log(data.notes);
+  const notesData = formatDatesInRows(data.notes)
 
   const columns = [
     {
@@ -44,7 +53,7 @@ export default async function Notes() {
   ];
   return (
     <div>
-      <Table columns={columns} rows={data.notes} />
+      <Table columns={columns} rows={notesData} />
     </div>
   );
 }

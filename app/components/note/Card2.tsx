@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { Spacer } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
@@ -6,14 +8,14 @@ import { useRouter } from "next/navigation";
 // (newValue: string) => void means that that setTitle is a function that takes a string as an argument (called `newValue`) and returns `void`
 
 export default function Note({
-  title,
-  description,
+  notesTitle,
+  notesDescription,
   setTitle,
   setDescription,
   handleSubmit,
 }: {
-  title: string;
-  description: string;
+  notesTitle: string;
+  notesDescription: string;
   setTitle: (newValue: string) => void;
   setDescription: (newValue: string) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -25,7 +27,7 @@ export default function Note({
         <CardHeader className="mb-6">
           <Input
             label="Title"
-            value={title}
+            value={notesTitle}
             onChange={(e) => setTitle(e.target.value)}
             className="block w-full"
           />
@@ -33,7 +35,7 @@ export default function Note({
         <CardBody className="mb-6">
           <Textarea
             label="Description"
-            value={description}
+            value={notesDescription}
             onChange={(e) => setDescription(e.target.value)}
             className="block w-full"
             classNames={{
