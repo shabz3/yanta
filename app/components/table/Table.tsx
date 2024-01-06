@@ -21,7 +21,6 @@ interface Column {
   key: string;
   label: string;
 }
-
 export interface Note {
   id: string;
   title: string;
@@ -39,7 +38,10 @@ export default function App({
   const router = useRouter();
   const [page, setPage] = useState(1);
   const rowsPerPage = 20;
-  const numberOfRows = rows.length
+  const numberOfRows = rows.length;
+
+  const numberOfCharactersForTitle = 20;
+  const numberOfCharactersForDescription = 20;
 
   const numberOfPages = Math.ceil(numberOfRows / rowsPerPage);
 
@@ -75,11 +77,20 @@ export default function App({
       case "title":
         return (
           <Link href={`/notes/${noteId}`} color="foreground" underline="hover">
-            {noteTitle}
+            {noteTitle.length > numberOfCharactersForTitle
+              ? noteTitle.substring(0, numberOfCharactersForTitle) + "..."
+              : noteTitle}
           </Link>
         );
       case "description":
-        return <p>{noteDescription}</p>;
+        return (
+          <p>
+            {noteDescription.length > numberOfCharactersForDescription
+              ? noteDescription.substring(0, numberOfCharactersForDescription) +
+                "..."
+              : noteDescription}
+          </p>
+        );
       case "last-updated":
         return <p>{lastUpdated}</p>;
       case "actions":
@@ -103,7 +114,7 @@ export default function App({
     <Table
       aria-label="Notes table"
       bottomContent={
-        rowsPerPage === numberOfRows ? <></> : (
+        rowsPerPage === numberOfRows ? null : (
           <div className="flex w-full justify-center">
             <Pagination
               isCompact
@@ -119,10 +130,7 @@ export default function App({
     >
       <TableHeader columns={columns}>
         {(column) => (
-          <TableColumn
-            key={column.key}
-            align={column.key === "actions" ? "center" : "start"}
-          >
+          <TableColumn key={column.key} align="start">
             {column.label}
           </TableColumn>
         )}
