@@ -1,4 +1,4 @@
-import Note3 from "../../components/note/Card3";
+import Note3 from "../../components/note/Card";
 import { Note } from "@/app/components/table/Table";
 import { redirect } from "next/navigation";
 

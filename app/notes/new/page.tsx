@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import Note3 from "../../components/note/Card3";
+import Note3 from "../../components/note/Card";
 import { redirect } from "next/navigation";
 
 export default function Page() {

@@ -8,13 +8,14 @@ import {
   TableRow,
   TableCell,
   Tooltip,
+  Pagination,
 } from "@nextui-org/react";
 import { EditIcon } from "./EditIcon";
 import { DeleteIcon } from "./DeleteIcon";
 import { Link } from "@nextui-org/react";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 interface Column {
   key: string;
@@ -28,8 +29,6 @@ export interface Note {
   "last-updated": string;
 }
 
-
-
 export default function App({
   columns,
   rows,
@@ -38,6 +37,17 @@ export default function App({
   rows: Note[];
 }) {
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 10;
+
+  const pages = Math.ceil(rows.length / rowsPerPage);
+
+  rows = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return rows.slice(start, end);
+  }, [page, rows]);
 
   async function deleteNote(noteId: string) {
     const response = await fetch(`../api/notes/delete`, {
@@ -89,7 +99,22 @@ export default function App({
   }, []);
 
   return (
-    <Table aria-label="Notes table">
+    <Table
+      aria-label="Notes table"
+      bottomContent={
+        <div className="flex w-full justify-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="primary"
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
+        </div>
+      }
+    >
       <TableHeader columns={columns}>
         {(column) => (
           <TableColumn
