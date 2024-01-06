@@ -38,9 +38,10 @@ export default function App({
 }) {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 20;
+  const numberOfRows = rows.length
 
-  const pages = Math.ceil(rows.length / rowsPerPage);
+  const numberOfPages = Math.ceil(numberOfRows / rowsPerPage);
 
   rows = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -102,17 +103,18 @@ export default function App({
     <Table
       aria-label="Notes table"
       bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination
-            isCompact
-            showControls
-            showShadow
-            color="primary"
-            page={page}
-            total={pages}
-            onChange={(page) => setPage(page)}
-          />
-        </div>
+        rowsPerPage === numberOfRows ? <></> : (
+          <div className="flex w-full justify-center">
+            <Pagination
+              isCompact
+              showControls
+              color="primary"
+              page={page}
+              total={numberOfPages}
+              onChange={(page) => setPage(page)}
+            />
+          </div>
+        )
       }
     >
       <TableHeader columns={columns}>
