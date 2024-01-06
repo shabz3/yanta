@@ -3,9 +3,7 @@ import { Note } from "@/app/components/table/Table";
 import { redirect } from "next/navigation";
 
 async function getData() {
-  const res = await fetch("http://localhost:3000/api/notes", {
-    cache: "no-store",
-  });
+  const res = await fetch("http://localhost:3000/api/notes");
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -31,7 +29,6 @@ export default async function SingleNote({
     console.log(title, description)
     const dateNow = new Date().toISOString();
     try {
-      console.log("got here");
       const response = await fetch(`http://localhost:3000/api/notes/edit`, {
         method: "POST",
         body: JSON.stringify({

@@ -1,15 +1,17 @@
+"use client";
 import React from "react";
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   Button,
   Spacer,
+  Link,
 } from "@nextui-org/react";
 import { AcmeLogo } from "./AcmeLogo";
 import { usePathname } from "next/navigation";
+// import Link from "next/link";
 
 export default function NavBar() {
   const currentRoute = usePathname();

@@ -4,7 +4,7 @@ import { Button, Input, Textarea } from "@nextui-org/react";
 import { Spacer } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 
 // (newValue: string) => void means that that setTitle is a function that takes a string as an argument (called `newValue`) and returns `void`
@@ -58,6 +58,7 @@ export default function Note({
               input: "resize-y min-h-[40px]",
             }}
             name="description"
+            disableAutosize
           />
         </CardBody>
         <CardFooter className="mb-6">
