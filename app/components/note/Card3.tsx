@@ -5,6 +5,7 @@ import { Spacer } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 
 // (newValue: string) => void means that that setTitle is a function that takes a string as an argument (called `newValue`) and returns `void`
 
@@ -15,13 +16,28 @@ export default function Note({
 }: {
   notesTitle: string;
   notesDescription: string;
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (formData: FormData) => void;
 }) {
   const router = useRouter();
   const [title, setTitle] = useState(notesTitle);
   const [description, setDescription] = useState(notesDescription);
+
+  function SubmitButton() {
+    const { pending } = useFormStatus();
+    return (
+      <Button
+        color="success"
+        variant="ghost"
+        type="submit"
+        isDisabled={pending}
+      >
+        {pending ? "Saving..." : "Save"}
+      </Button>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={handleSubmit}>
       <Card>
         <CardHeader className="mb-6">
           <Input
@@ -29,6 +45,7 @@ export default function Note({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="block w-full"
+            name="name"
           />
         </CardHeader>
         <CardBody className="mb-6">
@@ -40,6 +57,7 @@ export default function Note({
             classNames={{
               input: "resize-y min-h-[40px]",
             }}
+            name="description"
           />
         </CardBody>
         <CardFooter className="mb-6">
@@ -47,9 +65,7 @@ export default function Note({
             Cancel
           </Button>
           <Spacer x={10} />
-          <Button color="success" variant="ghost" type="submit">
-            Save
-          </Button>
+          <SubmitButton />
         </CardFooter>
       </Card>
     </form>
