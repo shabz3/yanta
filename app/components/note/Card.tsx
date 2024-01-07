@@ -30,6 +30,7 @@ export default function Note({
         variant="ghost"
         type="submit"
         isDisabled={pending}
+        isLoading={pending}
       >
         {pending ? "Saving..." : "Save"}
       </Button>

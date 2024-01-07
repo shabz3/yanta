@@ -1,16 +1,7 @@
-// import getData from "./GetJsonData"
 import Table from "../components/table/Table";
 import { Note } from "../components/table/Table";
 import moment from "moment";
-
-async function getData() {
-  const res = await fetch("http://localhost:3000/api/notes");
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-}
+import getData from "../lib/getData"
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {
@@ -31,7 +22,7 @@ export default async function Notes() {
 
     return dateB - dateA;
   });
-  const notesData = formatDatesInRows(data.notes)
+  const notesData = formatDatesInRows(data.notes);
 
   const columns = [
     {

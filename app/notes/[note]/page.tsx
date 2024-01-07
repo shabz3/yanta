@@ -1,15 +1,9 @@
 import Note3 from "../../components/note/Card";
 import { Note } from "@/app/components/table/Table";
 import { redirect } from "next/navigation";
+import { auth } from '@clerk/nextjs';
+import getData from "../../lib/getData"
 
-async function getData() {
-  const res = await fetch("http://localhost:3000/api/notes");
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-}
 
 export default async function SingleNote({
   params,
@@ -23,14 +17,16 @@ export default async function SingleNote({
   ).description;
 
   async function handleSubmit(formData: FormData) {
-    "use server"
-    const title = formData.get("name")
-    const description = formData.get("description")
-    console.log(title, description)
+    "use server";
+    const { getToken } = auth();
+    const title = formData.get("name");
+    const description = formData.get("description");
+    console.log(title, description);
     const dateNow = new Date().toISOString();
     try {
-      const response = await fetch(`http://localhost:3000/api/notes/edit`, {
+      fetch(`http://localhost:3000/api/notes/edit`, {
         method: "POST",
+        headers: { Authorization: `Bearer ${await getToken()}` },
         body: JSON.stringify({
           noteId: params.note,
           title,
@@ -41,7 +37,7 @@ export default async function SingleNote({
     } catch (error) {
       throw new Error(`Failed to update note: ${error}`);
     }
-    redirect("/notes")
+    redirect("/notes");
   }
 
   return (

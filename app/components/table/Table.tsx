@@ -13,7 +13,7 @@ import {
 import { EditIcon } from "./EditIcon";
 import { DeleteIcon } from "./DeleteIcon";
 import { Link } from "@nextui-org/react";
-
+import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
 
@@ -37,6 +37,7 @@ export default function App({
 }) {
   const router = useRouter();
   const [page, setPage] = useState(1);
+  const { getToken } = useAuth();
   const rowsPerPage = 20;
   const numberOfRows = rows.length;
 
@@ -55,6 +56,7 @@ export default function App({
   async function deleteNote(noteId: string) {
     const response = await fetch(`../api/notes/delete`, {
       method: "DELETE",
+      headers: { Authorization: `Bearer ${await getToken()}` },
       body: JSON.stringify({
         noteId,
       }),
@@ -112,6 +114,7 @@ export default function App({
 
   return (
     <Table
+      isStriped
       aria-label="Notes table"
       bottomContent={
         rowsPerPage === numberOfRows ? null : (
@@ -135,7 +138,7 @@ export default function App({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={rows}>
+      <TableBody items={rows} emptyContent={"No notes to display."}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

@@ -11,10 +11,21 @@ import {
 } from "@nextui-org/react";
 import { AcmeLogo } from "./AcmeLogo";
 import { usePathname } from "next/navigation";
-// import Link from "next/link";
+import { UserButton, useAuth } from "@clerk/nextjs";
 
 export default function NavBar() {
   const currentRoute = usePathname();
+  const { isLoaded, isSignedIn } = useAuth();
+  console.log(isSignedIn);
+
+  function displayLoginButton() {
+    if (isSignedIn) {
+      return <UserButton afterSignOutUrl="/" />;
+    } else if (typeof isSignedIn === "undefined") {
+      return <Button href="#" isLoading />;
+    }
+    return <Button href="#">Login/Sign Up</Button>;
+  }
 
   return (
     <>
@@ -59,14 +70,7 @@ export default function NavBar() {
           </NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
-          <NavbarItem className="hidden lg:flex">
-            <Link href="#">Login</Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Button as={Link} color="primary" href="#" variant="flat">
-              Sign Up
-            </Button>
-          </NavbarItem>
+          <NavbarItem>{displayLoginButton()}</NavbarItem>
         </NavbarContent>
       </Navbar>
       <Spacer x={4} />
