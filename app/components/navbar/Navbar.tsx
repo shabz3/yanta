@@ -22,9 +22,11 @@ export default function NavBar() {
     if (isSignedIn) {
       return <UserButton afterSignOutUrl="/" />;
     } else if (typeof isSignedIn === "undefined") {
-      return <Button href="#" isLoading />;
+      return <Button isLoading />;
     }
-    return <Button href="#">Login/Sign Up</Button>;
+    return (
+        <Button as={Link} href="/notes">Login/Sign Up</Button>
+    );
   }
 
   return (
