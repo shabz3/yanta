@@ -1,6 +1,6 @@
 "use client"
 
-import { useSession } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
 
@@ -18,18 +18,18 @@ const supabaseClient = async (supabaseAccessToken: string | null) => {
 
 export default function App() {
   const [databaseData, setDatabaseData] = useState("")
-  const { session } = useSession();
-  // console.log("supabaseUrl: ", supabaseUrl, "supabaseKey: ", supabaseKey)
+  const { getToken, userId } = useAuth();
+  console.log(userId)
 
   const fetchData = async () => {
     // TODO #1: Replace with your JWT template name
-    const supabaseAccessToken = await session!.getToken({ template: "supabase" });
+    const supabaseAccessToken = await getToken({ template: "supabase" });
 
     const supabase = await supabaseClient(supabaseAccessToken);
 
     // TODO #2: Replace with your database table name
 
-    const { data , error } = await supabase.from("Notes").select();
+    const { data , error } = await supabase.from("Notes").select("*");
     console.log(data[0].title)
 
     // TODO #3: Handle the response
