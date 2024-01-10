@@ -1,7 +1,7 @@
 import Table from "../components/table/Table";
 import { Note } from "../components/table/Table";
 import moment from "moment";
-import getData from "../lib/getData"
+import getData from "../lib/data"
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {

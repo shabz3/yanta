@@ -2,7 +2,7 @@ import Note3 from "../../components/note/Card";
 import { Note } from "@/app/components/table/Table";
 import { redirect } from "next/navigation";
 import { auth } from '@clerk/nextjs';
-import getData from "../../lib/getData"
+import getData from "../../lib/data"
 
 
 export default async function SingleNote({
