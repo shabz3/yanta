@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import Note3 from "../../components/note/Card";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
+import { createNote } from "@/app/lib/actions";
 
 export default function Page() {
   async function handleSubmit(formData: FormData) {
@@ -10,22 +11,13 @@ export default function Page() {
     const newNoteId = uuidv4();
     const title = formData.get("name");
     const description = formData.get("description");
-    const currentDate = new Date().toISOString();
-    try {
-      fetch(`http://localhost:3000/api/notes/new`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${await getToken()}` },
-        body: JSON.stringify({
-          noteId: newNoteId,
-          title,
-          description,
-          "last-updated": currentDate,
-        }),
-      });
-    } catch (error) {
-      throw new Error("Failed to create note");
+    const dateNow = new Date().toISOString();
+    const { error } = await createNote(title, description, dateNow);
+    if (error) {
+      throw new Error(`Error updating note: ${error}`);
+    } else {
+      redirect("/notes");
     }
-    redirect("/notes");
   }
 
   return (

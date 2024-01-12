@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     id: data.noteId,
     title: data.title,
     description: data.description,
-    "last-updated": data["last-updated"],
+    "last_updated": data["last_updated"],
   };
   notesData.push(newNote);
 

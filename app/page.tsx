@@ -1,7 +1,7 @@
-import getData from "./lib/data";
+import getNotes from "./lib/data";
 
 export default async function App() {
-  const { data, error } = await getData();
+  const { data, error } = await getNotes();
   console.log(data);
   // setDatabaseData(data[0].title);
 

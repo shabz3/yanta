@@ -1,43 +1,37 @@
 import Note3 from "../../components/note/Card";
 import { Note } from "@/app/components/table/Table";
 import { redirect } from "next/navigation";
-import { auth } from '@clerk/nextjs';
-import getData from "../../lib/data"
-
+import { auth } from "@clerk/nextjs";
+import getNotes from "../../lib/data";
+import {editNote} from "@/app/lib/actions";
 
 export default async function SingleNote({
   params,
 }: {
-  params: { note: string };
+  params: { note: number };
 }) {
-  const data = await getData();
-  let title = data.notes.find((obj: Note) => obj.id === params.note).title;
-  let description = data.notes.find(
+  // hacky but doing params: { note: number } doesn't convert note to number
+  params.note = Number(params.note);
+  const { data } = await getNotes();
+  console.log(typeof params.note);
+  let title = data!.find((obj: Note) => obj.id === params.note).title;
+
+  let description = data!.find(
     (obj: Note) => obj.id === params.note
   ).description;
 
   async function handleSubmit(formData: FormData) {
     "use server";
-    const { getToken } = auth();
+    const noteId = params.note;
     const title = formData.get("name");
     const description = formData.get("description");
-    console.log(title, description);
     const dateNow = new Date().toISOString();
-    try {
-      fetch(`http://localhost:3000/api/notes/edit`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${await getToken()}` },
-        body: JSON.stringify({
-          noteId: params.note,
-          title,
-          description,
-          "last-updated": dateNow,
-        }),
-      });
-    } catch (error) {
-      throw new Error(`Failed to update note: ${error}`);
+    const { error } = await editNote(noteId, title, description, dateNow);
+    if (error) {
+      throw new Error(`Error updating note: ${error}`);
+    } else {
+      redirect("/notes");
     }
-    redirect("/notes");
   }
 
   return (

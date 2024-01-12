@@ -1,28 +1,31 @@
 import Table from "../components/table/Table";
 import { Note } from "../components/table/Table";
 import moment from "moment";
-import getData from "../lib/data"
+import getNotes from "../lib/data";
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {
-    const formattedDate = moment(row["last-updated"]).fromNow();
+    const formattedDate = moment(row["last_updated"]).fromNow();
     return {
       ...row,
-      "last-updated": formattedDate,
+      "last_updated": formattedDate,
     };
   });
 };
 
-export default async function Notes() {
-  const data = await getData();
-  // sort notes in latest created order
-  data.notes.sort((a: Note, b: Note) => {
-    const dateA = new Date(a["last-updated"]).getTime();
-    const dateB = new Date(b["last-updated"]).getTime();
+const sortNotesInLatestCreated = (data: Note[]) => {
+  data!.sort((a: Note, b: Note) => {
+    const dateA = new Date(a["last_updated"]).getTime();
+    const dateB = new Date(b["last_updated"]).getTime();
 
     return dateB - dateA;
   });
-  const notesData = formatDatesInRows(data.notes);
+};
+
+export default async function Notes() {
+  const { data } = await getNotes();
+  sortNotesInLatestCreated(data!)
+  const notesData = formatDatesInRows(data!);
 
   const columns = [
     {
@@ -34,7 +37,7 @@ export default async function Notes() {
       label: "Brief Description",
     },
     {
-      key: "last-updated",
+      key: "last_updated",
       label: "Last Updated",
     },
     {

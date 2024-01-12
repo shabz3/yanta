@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
           ...element,
           title: data.title,
           description: data.description,
-          "last-updated": data["last-updated"],
+          "last_updated": data["last_updated"],
         };
       }
       return element;

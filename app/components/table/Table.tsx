@@ -16,16 +16,18 @@ import { Link } from "@nextui-org/react";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
+import { deleteNote } from "@/app/lib/actions";
 
 interface Column {
   key: string;
   label: string;
 }
 export interface Note {
-  id: string;
+  id: number;
   title: string;
   description: string;
-  "last-updated": string;
+  last_updated: string;
+  user_id: string;
 }
 
 export default function App({
@@ -53,18 +55,11 @@ export default function App({
     return rows.slice(start, end);
   }, [page, rows]);
 
-  async function deleteNote(noteId: string) {
-    const response = await fetch(`../api/notes/delete`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${await getToken()}` },
-      body: JSON.stringify({
-        noteId,
-      }),
-    });
-    if (!response.ok) {
-      throw new Error("Failed to update note");
+  async function removeNote(noteId: number) {
+    const { error } = await deleteNote(noteId);
+    if (error) {
+      throw new Error(`Error updating note: ${error}`);
     }
-    router.refresh();
   }
 
   const renderCell = React.useCallback((note: Note, columnKey: React.Key) => {
@@ -73,7 +68,7 @@ export default function App({
     const noteId = note.id;
     const noteTitle = note.title;
     const noteDescription = note.description;
-    const lastUpdated = note["last-updated"];
+    const lastUpdated = note["last_updated"];
 
     switch (columnKey) {
       case "title":
@@ -93,14 +88,14 @@ export default function App({
               : noteDescription}
           </p>
         );
-      case "last-updated":
+      case "last_updated":
         return <p>{lastUpdated}</p>;
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
             <Tooltip color="danger" content="Delete note">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <div onClick={() => deleteNote(noteId)}>
+                <div onClick={() => removeNote(noteId)}>
                   <DeleteIcon />
                 </div>
               </span>
@@ -117,7 +112,7 @@ export default function App({
       isStriped
       aria-label="Notes table"
       bottomContent={
-        rowsPerPage === numberOfRows ? null : (
+        numberOfRows > rowsPerPage ? (
           <div className="flex w-full justify-center">
             <Pagination
               isCompact
@@ -128,7 +123,7 @@ export default function App({
               onChange={(page) => setPage(page)}
             />
           </div>
-        )
+        ) : null
       }
     >
       <TableHeader columns={columns}>
