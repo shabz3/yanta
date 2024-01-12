@@ -14,7 +14,7 @@ export default function Page() {
     const dateNow = new Date().toISOString();
     const { error } = await createNote(title, description, dateNow);
     if (error) {
-      throw new Error(`Error updating note: ${error}`);
+      throw new Error(`Error creating note: ${error}`);
     } else {
       redirect("/notes");
     }

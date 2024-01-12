@@ -44,12 +44,4 @@ export async function createNote(
   return { error };
 }
 
-export async function deleteNote(noteId: number){
-  const supabaseAccessToken = await getSupabaseAccessToken();
-  const supabase = await supabaseClient(supabaseAccessToken);
-  const { error } = await supabase
-    .from("Notes")
-    .delete()
-    .eq("id", noteId);
-  return { error };
-}
+

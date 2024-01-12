@@ -2,16 +2,31 @@ import Table from "../components/table/Table";
 import { Note } from "../components/table/Table";
 import moment from "moment";
 import getNotes from "../lib/data";
+import getSupabaseAccessToken from "../lib/getSupabaseAccessToken";
+import supabaseClient from "../lib/supabaseClient";
+import { revalidatePath } from "next/cache";
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {
     const formattedDate = moment(row["last_updated"]).fromNow();
     return {
       ...row,
-      "last_updated": formattedDate,
+      last_updated: formattedDate,
     };
   });
 };
+
+export async function deleteNote(noteId: number) {
+  "use server";
+  console.log("NOTE ID: ", noteId);
+  const supabaseAccessToken = await getSupabaseAccessToken();
+  const supabase = await supabaseClient(supabaseAccessToken);
+  const { error } = await supabase.from("Notes").delete().eq("id", noteId);
+  if (error) {
+    throw new Error(`Error deleting note: ${error}`);
+  }
+  revalidatePath("/notes");
+}
 
 const sortNotesInLatestCreated = (data: Note[]) => {
   data!.sort((a: Note, b: Note) => {
@@ -24,7 +39,7 @@ const sortNotesInLatestCreated = (data: Note[]) => {
 
 export default async function Notes() {
   const { data } = await getNotes();
-  sortNotesInLatestCreated(data!)
+  sortNotesInLatestCreated(data!);
   const notesData = formatDatesInRows(data!);
 
   const columns = [
@@ -47,7 +62,7 @@ export default async function Notes() {
   ];
   return (
     <div>
-      <Table columns={columns} rows={notesData} />
+      <Table columns={columns} rows={notesData} deleteNote={deleteNote} />
     </div>
   );
 }

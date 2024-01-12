@@ -14,11 +14,11 @@ export default async function SingleNote({
   params.note = Number(params.note);
   const { data } = await getNotes();
   console.log(typeof params.note);
-  let title = data!.find((obj: Note) => obj.id === params.note).title;
+  let title = data!.find((obj: Note) => obj.id === params.note)?.title;
 
   let description = data!.find(
     (obj: Note) => obj.id === params.note
-  ).description;
+  )?.description;
 
   async function handleSubmit(formData: FormData) {
     "use server";

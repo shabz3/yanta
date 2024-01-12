@@ -62,7 +62,7 @@ export default function Note({
             disableAutosize
           />
         </CardBody>
-        <CardFooter className="mb-6">
+        <CardFooter className="mb-5">
           <Button color="danger" variant="ghost" onClick={() => router.back()}>
             Cancel
           </Button>

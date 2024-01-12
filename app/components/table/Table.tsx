@@ -1,5 +1,4 @@
 "use client";
-import React, { useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -9,14 +8,14 @@ import {
   TableCell,
   Tooltip,
   Pagination,
+  Button,
 } from "@nextui-org/react";
-import { EditIcon } from "./EditIcon";
+import { EditIcon, PlusIcon } from "./PlusIcon";
 import { DeleteIcon } from "./DeleteIcon";
 import { Link } from "@nextui-org/react";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
-import { deleteNote } from "@/app/lib/actions";
+import React, { useState, useMemo } from "react";
 
 interface Column {
   key: string;
@@ -27,15 +26,16 @@ export interface Note {
   title: string;
   description: string;
   last_updated: string;
-  user_id: string;
 }
 
 export default function App({
   columns,
   rows,
+  deleteNote,
 }: {
   columns: Column[];
   rows: Note[];
+  deleteNote: any;
 }) {
   const router = useRouter();
   const [page, setPage] = useState(1);
@@ -54,13 +54,6 @@ export default function App({
 
     return rows.slice(start, end);
   }, [page, rows]);
-
-  async function removeNote(noteId: number) {
-    const { error } = await deleteNote(noteId);
-    if (error) {
-      throw new Error(`Error updating note: ${error}`);
-    }
-  }
 
   const renderCell = React.useCallback((note: Note, columnKey: React.Key) => {
     const cellValue = note[columnKey as keyof Note];
@@ -95,9 +88,9 @@ export default function App({
           <div className="relative flex items-center gap-2">
             <Tooltip color="danger" content="Delete note">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <div onClick={() => removeNote(noteId)}>
+                <button onClick={() => deleteNote(noteId)}>
                   <DeleteIcon />
-                </div>
+                </button>
               </span>
             </Tooltip>
           </div>
@@ -108,40 +101,47 @@ export default function App({
   }, []);
 
   return (
-    <Table
-      isStriped
-      aria-label="Notes table"
-      bottomContent={
-        numberOfRows > rowsPerPage ? (
-          <div className="flex w-full justify-center">
-            <Pagination
-              isCompact
-              showControls
-              color="primary"
-              page={page}
-              total={numberOfPages}
-              onChange={(page) => setPage(page)}
-            />
-          </div>
-        ) : null
-      }
-    >
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn key={column.key} align="start">
-            {column.label}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody items={rows} emptyContent={"No notes to display."}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <div className="m-8">
+      <Table
+        isStriped
+        aria-label="Notes table"
+        bottomContent={
+          numberOfRows > rowsPerPage ? (
+            <div className="flex w-full justify-center">
+              <Pagination
+                isCompact
+                showControls
+                color="primary"
+                page={page}
+                total={numberOfPages}
+                onChange={(page) => setPage(page)}
+              />
+            </div>
+          ) : null
+        }
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn key={column.key} align="start">
+              {column.label}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          items={rows}
+          emptyContent={
+            <Button onClick={() => router.push("/notes/new")} endContent={<PlusIcon />}>Create a note</Button>
+          }
+        >
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
