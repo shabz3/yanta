@@ -1,4 +1,4 @@
-import Note3 from "../../components/note/Card";
+import NoteCard from "../../components/note/Card";
 import { Note } from "@/app/components/table/Table";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
@@ -10,7 +10,7 @@ export default async function SingleNote({
 }: {
   params: { note: number };
 }) {
-  // hacky but doing params: { note: number } doesn't convert note to number
+  // hacky but doing params: { note: number } doesn't actually convert note to number
   params.note = Number(params.note);
   const { data } = await getNotes();
   console.log(typeof params.note);
@@ -35,7 +35,7 @@ export default async function SingleNote({
   }
 
   return (
-    <Note3
+    <NoteCard
       notesTitle={title}
       notesDescription={description}
       handleSubmit={handleSubmit}

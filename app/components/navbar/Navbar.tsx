@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -8,30 +7,73 @@ import {
   Button,
   Spacer,
   Link,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+  Spinner,
 } from "@nextui-org/react";
 import { AcmeLogo } from "./AcmeLogo";
 import { usePathname } from "next/navigation";
 import { UserButton, useAuth } from "@clerk/nextjs";
+import { useState, useEffect } from "react";
 
 export default function NavBar() {
   const currentRoute = usePathname();
   const { isLoaded, isSignedIn } = useAuth();
-  console.log(isSignedIn);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState([
+    {
+      buttonName: "All Notes",
+      buttonPath: "/notes",
+      buttonColor: "foreground",
+    },
+    {
+      buttonName: "New Note",
+      buttonPath: "/notes/new",
+      buttonColor: "foreground",
+    },
+  ]);
+  useEffect(() => {
+    const updatedButtons = menuItems.map((menuItem) => {
+      if (menuItem.buttonPath === currentRoute) {
+        return { ...menuItem, buttonColor: "primary" };
+      } else {
+        return { ...menuItem, buttonColor: "foreground" };
+      }
+    });
+    setMenuItems(updatedButtons);
+  }, [currentRoute]);
+
+  function handleSetMenuItems(buttonPath: string) {
+    const updatedMenuItems = menuItems.map((menuItem) => {
+      if (menuItem.buttonPath === buttonPath) {
+        return { ...menuItem, buttonColor: "primary" };
+      } else {
+        return { ...menuItem, buttonColor: "foreground" };
+      }
+    });
+    setMenuItems(updatedMenuItems);
+    setIsMenuOpen(false);
+  }
 
   function displayLoginButton() {
     if (isSignedIn) {
       return <UserButton afterSignOutUrl="/" />;
     } else if (typeof isSignedIn === "undefined") {
-      return <Button isLoading />;
+      return <Spinner color="default" />;
     }
     return (
-        <Button as={Link} href="/notes">Login/Sign Up</Button>
+      <Button as={Link} href="/notes">
+        Login/Sign Up
+      </Button>
     );
   }
 
   return (
     <>
       <Navbar
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
         classNames={{
           item: [
             "flex",
@@ -50,6 +92,10 @@ export default function NavBar() {
         }}
       >
         <NavbarBrand>
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className="sm:hidden"
+          />
           <AcmeLogo />
           <p className="font-bold text-inherit">ACME</p>
         </NavbarBrand>
@@ -74,6 +120,23 @@ export default function NavBar() {
         <NavbarContent justify="end">
           <NavbarItem>{displayLoginButton()}</NavbarItem>
         </NavbarContent>
+        <NavbarMenu>
+          {menuItems.map(({ buttonName, buttonPath, buttonColor }, index) => (
+            <NavbarMenuItem key={`${buttonPath}-${index}`}>
+              <Link
+                href={buttonPath}
+                className="w-full"
+                size="lg"
+                color={buttonColor}
+                onPress={() => {
+                  handleSetMenuItems(buttonName);
+                }}
+              >
+                {buttonName}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        </NavbarMenu>
       </Navbar>
       <Spacer x={4} />
     </>

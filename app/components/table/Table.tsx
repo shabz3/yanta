@@ -10,7 +10,7 @@ import {
   Pagination,
   Button,
 } from "@nextui-org/react";
-import { EditIcon, PlusIcon } from "./PlusIcon";
+import { PlusIcon } from "./PlusIcon";
 import { DeleteIcon } from "./DeleteIcon";
 import { Link } from "@nextui-org/react";
 import { useAuth } from "@clerk/nextjs";
@@ -130,7 +130,12 @@ export default function App({
         <TableBody
           items={rows}
           emptyContent={
-            <Button onClick={() => router.push("/notes/new")} endContent={<PlusIcon />}>Create a note</Button>
+            <Button
+              onClick={() => router.push("/notes/new")}
+              endContent={<PlusIcon />}
+            >
+              Create a note
+            </Button>
           }
         >
           {(item) => (

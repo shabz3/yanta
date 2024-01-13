@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import Note3 from "../../components/note/Card";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
@@ -8,7 +7,6 @@ export default function Page() {
   async function handleSubmit(formData: FormData) {
     "use server";
     const { getToken } = auth();
-    const newNoteId = uuidv4();
     const title = formData.get("name");
     const description = formData.get("description");
     const dateNow = new Date().toISOString();
