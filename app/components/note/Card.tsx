@@ -12,31 +12,43 @@ import { useDebouncedCallback } from "use-debounce";
 // (newValue: string) => void means that that setTitle is a function that takes a string as an argument (called `newValue`) and returns `void`
 
 export default function Note({
+  noteId,
   notesTitle,
   notesDescription,
   changeTitle,
   changeDescription,
 }: {
+  noteId: number;
   notesTitle: string;
   notesDescription: string;
-  changeTitle: (title: string) => void;
-  changeDescription: (description: string) => void;
+  changeTitle: (title: string, noteId: number) => Promise<number>;
+  changeDescription: (description: string, noteId: number) => Promise<number>;
 }) {
   const router = useRouter();
   const [title, setTitle] = useState(notesTitle);
   const [description, setDescription] = useState(notesDescription);
   const [noTitleText, setNoTitleText] = useState("");
+  const [updatedNoteId, setUpdatedNoteId] = useState(noteId);
+  useEffect(() => {
+    if (title === "") {
+      setNoTitleText("Your note must have a title");
+    }
+  }, []);
 
-  const debouncedTitle = useDebouncedCallback((newTitle) => {
+  const debouncedTitle = useDebouncedCallback(async (newTitle) => {
     if (newTitle === "") {
       setNoTitleText("Your note must have a title");
     } else {
       setNoTitleText("");
-      changeTitle(newTitle);
+      const newId = await changeTitle(newTitle, updatedNoteId);
+      setUpdatedNoteId(newId);
     }
   }, 600);
-  const debouncedDescription = useDebouncedCallback((newDescription) => {
-    changeDescription(newDescription);
+  const debouncedDescription = useDebouncedCallback(async (newDescription) => {
+    const newId = await changeDescription(newDescription, updatedNoteId);
+    if (updatedNoteId === 0) {
+      setUpdatedNoteId(newId);
+    }
   }, 1000);
 
   function GoBackButton() {

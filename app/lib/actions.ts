@@ -2,34 +2,35 @@ import getSupabaseAccessToken from "./getSupabaseAccessToken";
 import supabaseClient from "./supabaseClient";
 import { Note } from "../components/table/Table";
 import { auth } from "@clerk/nextjs";
+import { totalmem } from "os";
 
 export async function editNote(
   noteId: number,
-  title: string | null,
-  description: string | null,
+  title: string,
+  description: string,
   dateNow: string
 ) {
   const { userId } = auth();
   const supabaseAccessToken = await getSupabaseAccessToken();
   const supabase = await supabaseClient(supabaseAccessToken);
   function formToUpdate() {
-    if (description && title) {
-      console.log("1")
+    if (description !== "" && title !== "") {
+      console.log("1");
       return {
         title,
         description,
         last_updated: dateNow,
         user_id: userId,
       };
-    } else if (description === null) {
-      console.log("2")
+    } else if (description === "") {
+      console.log("2");
       return {
         title,
         last_updated: dateNow,
         user_id: userId,
       };
-    } else if (title === null) {
-      console.log("3")
+    } else if (title === "") {
+      console.log("3");
       return {
         description,
         last_updated: dateNow,
@@ -37,12 +38,15 @@ export async function editNote(
       };
     }
   }
+  console.log("formToUpdate() is: ", formToUpdate());
 
-  let { error } = await supabase
+  const { data, error } = await supabase
     .from("Notes")
     .update(formToUpdate())
-    .eq("id", noteId);
-  return { error };
+    .eq("id", noteId)
+    .select();
+  console.log("EDIT: ", data);
+  return { data, error };
 }
 
 export async function createNote(
@@ -53,7 +57,7 @@ export async function createNote(
   const { userId } = auth();
   const supabaseAccessToken = await getSupabaseAccessToken();
   const supabase = await supabaseClient(supabaseAccessToken);
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("Notes")
     .insert({
       title,
@@ -62,5 +66,5 @@ export async function createNote(
       user_id: userId,
     })
     .select();
-  return { error };
+  return { data, error };
 }

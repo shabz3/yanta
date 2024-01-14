@@ -5,13 +5,11 @@ import supabaseClient from "./supabaseClient";
 
 
 export default async function getNotes() {
-  console.log("Getting the latest data");
   const supabaseAccessToken = await getSupabaseAccessToken();
   const supabase = await supabaseClient(supabaseAccessToken);
 
   const { data, error } = await supabase
     .from("Notes")
     .select("id, title, description, last_updated");
-  console.log("DATA: ", data);
   return { data, error };
 }

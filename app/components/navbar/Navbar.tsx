@@ -17,6 +17,9 @@ import { usePathname } from "next/navigation";
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
+import { MoonIcon, SunIcon } from "@heroicons/react/16/solid";
+import { NewNoteIcon } from "./NewNoteIcon";
+import { AllNotesIcon } from "./AllNotesIcons";
 
 export default function NavBar() {
   const currentRoute = usePathname();
@@ -108,7 +111,7 @@ export default function NavBar() {
               href="/notes"
               color={currentRoute === "/notes" ? "primary" : "foreground"}
             >
-              All Notes
+              All Notes &nbsp; {<AllNotesIcon />}
             </Link>
           </NavbarItem>
           <NavbarItem isActive={currentRoute === "/notes/new" ? true : false}>
@@ -116,7 +119,7 @@ export default function NavBar() {
               href="/notes/new"
               color={currentRoute === "/notes/new" ? "primary" : "foreground"}
             >
-              New Note
+              New Note &nbsp; {<NewNoteIcon />}
             </Link>
           </NavbarItem>
         </NavbarContent>
@@ -125,13 +128,14 @@ export default function NavBar() {
             <DisplayLoginButton />
           </NavbarItem>
           <NavbarItem>
-            {/* <Button
+            <Button
+              variant="light"
               onClick={() =>
                 currentTheme == "dark" ? setTheme("light") : setTheme("dark")
               }
             >
-              {currentTheme === "light" ? "night" : "day"}
-            </Button> */}
+              {currentTheme === "light" ? <MoonIcon /> : <SunIcon />}
+            </Button>
           </NavbarItem>
         </NavbarContent>
         <NavbarMenu>

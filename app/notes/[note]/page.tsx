@@ -12,39 +12,40 @@ export default async function SingleNote({
 }) {
   // hacky but doing params: { note: number } doesn't actually convert note to number
   params.note = Number(params.note);
+  const noteId = params.note;
   const { data } = await getNotes();
-  console.log(typeof params.note);
-  let title = data!.find((obj: Note) => obj.id === params.note)?.title;
+  let title = data!.find((obj: Note) => obj.id === noteId)?.title;
 
   let description = data!.find(
     (obj: Note) => obj.id === params.note
   )?.description;
 
-  async function changeTitle(newTitle: string) {
+  async function changeTitle(newTitle: string, noteId: number) {
     "use server";
-    const noteId = params.note;
     const dateNow = new Date().toISOString();
-    const { error } = await editNote(noteId, newTitle, null, dateNow);
+    const { error } = await editNote(noteId, newTitle, "", dateNow);
     if (error) {
       throw new Error(`Error updating note: ${error}`);
     } else {
       revalidatePath("/notes");
+      return noteId;
     }
   }
   async function changeDescription(newDescription: string) {
     "use server";
-    const noteId = params.note;
     const dateNow = new Date().toISOString();
-    const { error } = await editNote(noteId, null, newDescription, dateNow);
+    const { error } = await editNote(noteId, "", newDescription, dateNow);
     if (error) {
       throw new Error(`Error updating note: ${error}`);
     } else {
-      // revalidatePath("/notes");
+      revalidatePath("/notes");
+      return noteId;
     }
   }
 
   return (
     <NoteCard
+      noteId={noteId}
       notesTitle={title}
       notesDescription={description}
       changeTitle={changeTitle}
