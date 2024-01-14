@@ -16,6 +16,7 @@ import { AcmeLogo } from "./AcmeLogo";
 import { usePathname } from "next/navigation";
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 export default function NavBar() {
   const currentRoute = usePathname();
@@ -43,6 +44,8 @@ export default function NavBar() {
     });
     setMenuItems(updatedButtons);
   }, [currentRoute]);
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
   function handleSetMenuItems(buttonPath: string) {
     const updatedMenuItems = menuItems.map((menuItem) => {
@@ -56,7 +59,7 @@ export default function NavBar() {
     setIsMenuOpen(false);
   }
 
-  function displayLoginButton() {
+  function DisplayLoginButton() {
     if (isSignedIn) {
       return <UserButton afterSignOutUrl="/" />;
     } else if (typeof isSignedIn === "undefined") {
@@ -118,7 +121,18 @@ export default function NavBar() {
           </NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
-          <NavbarItem>{displayLoginButton()}</NavbarItem>
+          <NavbarItem>
+            <DisplayLoginButton />
+          </NavbarItem>
+          <NavbarItem>
+            {/* <Button
+              onClick={() =>
+                currentTheme == "dark" ? setTheme("light") : setTheme("dark")
+              }
+            >
+              {currentTheme === "light" ? "night" : "day"}
+            </Button> */}
+          </NavbarItem>
         </NavbarContent>
         <NavbarMenu>
           {menuItems.map(({ buttonName, buttonPath, buttonColor }, index) => (

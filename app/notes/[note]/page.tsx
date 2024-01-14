@@ -1,9 +1,9 @@
 import NoteCard from "../../components/note/Card";
 import { Note } from "@/app/components/table/Table";
-import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
 import getNotes from "../../lib/data";
-import {editNote} from "@/app/lib/actions";
+import { editNote } from "@/app/lib/actions";
+import { revalidatePath } from "next/cache";
 
 export default async function SingleNote({
   params,
@@ -20,17 +20,26 @@ export default async function SingleNote({
     (obj: Note) => obj.id === params.note
   )?.description;
 
-  async function handleSubmit(formData: FormData) {
+  async function changeTitle(newTitle: string) {
     "use server";
     const noteId = params.note;
-    const title = formData.get("name");
-    const description = formData.get("description");
     const dateNow = new Date().toISOString();
-    const { error } = await editNote(noteId, title, description, dateNow);
+    const { error } = await editNote(noteId, newTitle, null, dateNow);
     if (error) {
       throw new Error(`Error updating note: ${error}`);
     } else {
-      redirect("/notes");
+      revalidatePath("/notes");
+    }
+  }
+  async function changeDescription(newDescription: string) {
+    "use server";
+    const noteId = params.note;
+    const dateNow = new Date().toISOString();
+    const { error } = await editNote(noteId, null, newDescription, dateNow);
+    if (error) {
+      throw new Error(`Error updating note: ${error}`);
+    } else {
+      revalidatePath("/notes");
     }
   }
 
@@ -38,7 +47,8 @@ export default async function SingleNote({
     <NoteCard
       notesTitle={title}
       notesDescription={description}
-      handleSubmit={handleSubmit}
+      changeTitle={changeTitle}
+      changeDescription={changeDescription}
     />
   );
 }
