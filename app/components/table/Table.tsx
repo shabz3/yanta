@@ -15,7 +15,7 @@ import { DeleteIcon } from "./DeleteIcon";
 import { Link } from "@nextui-org/react";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 interface Column {
   key: string;
@@ -42,7 +42,6 @@ export default function App({
   const { getToken } = useAuth();
   const rowsPerPage = 20;
   const numberOfRows = rows.length;
-
   const numberOfCharactersForTitle = 20;
   const numberOfCharactersForDescription = 20;
 

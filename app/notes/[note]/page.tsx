@@ -3,7 +3,7 @@ import { Note } from "@/app/components/table/Table";
 import { auth } from "@clerk/nextjs";
 import getNotes from "../../lib/data";
 import { editNote } from "@/app/lib/actions";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export default async function SingleNote({
   params,
@@ -39,7 +39,7 @@ export default async function SingleNote({
     if (error) {
       throw new Error(`Error updating note: ${error}`);
     } else {
-      revalidatePath("/notes");
+      // revalidatePath("/notes");
     }
   }
 

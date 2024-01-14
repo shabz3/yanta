@@ -29,7 +29,7 @@ export async function deleteNote(noteId: number) {
 }
 
 const sortNotesInLatestCreated = (data: Note[]) => {
-  data!.sort((a: Note, b: Note) => {
+  data.sort((a: Note, b: Note) => {
     const dateA = new Date(a["last_updated"]).getTime();
     const dateB = new Date(b["last_updated"]).getTime();
 
@@ -38,9 +38,12 @@ const sortNotesInLatestCreated = (data: Note[]) => {
 };
 
 export default async function Notes() {
-  const { data } = await getNotes();
-  sortNotesInLatestCreated(data!);
-  const notesData = formatDatesInRows(data!);
+  let { data } = await getNotes();
+  if (data === null) {
+    data = [];
+  }
+  sortNotesInLatestCreated(data);
+  const notesData = formatDatesInRows(data);
 
   const columns = [
     {
