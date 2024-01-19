@@ -5,6 +5,7 @@ import getNotes from "../lib/data";
 import getSupabaseAccessToken from "../lib/getSupabaseAccessToken";
 import supabaseClient from "../lib/supabaseClient";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
+import NoteCell from "../components/Table/NoteCell";
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {
@@ -38,13 +39,14 @@ const sortNotesInLatestCreated = (data: Note[]) => {
 };
 
 export default async function Notes() {
-  noStore()
+  noStore();
   let { data } = await getNotes();
   if (data === null) {
     data = [];
   }
   sortNotesInLatestCreated(data);
   const notesData = formatDatesInRows(data);
+  console.log(notesData);
 
   const columns = [
     {
@@ -65,8 +67,18 @@ export default async function Notes() {
     },
   ];
   return (
-    <div>
-      <Table columns={columns} rows={notesData} deleteNote={deleteNote} />
+    <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
+      <>
+        {notesData.map((note) => (
+          <NoteCell
+            key={note.id}
+            title={note.title}
+            description={note.description}
+            dateFormatted={note.last_updated}
+          />
+        ))}
+      </>
+      {/* <Table columns={columns} rows={notesData} deleteNote={deleteNote} /> */}
     </div>
   );
 }
