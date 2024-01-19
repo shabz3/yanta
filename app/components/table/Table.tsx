@@ -74,10 +74,13 @@ export default function App({
       case "description":
         return (
           <p>
-            {noteDescription.length > numberOfCharactersForDescription
-              ? noteDescription.substring(0, numberOfCharactersForDescription) +
-                "..."
-              : noteDescription}
+            {noteDescription &&
+              (noteDescription.length > numberOfCharactersForDescription
+                ? noteDescription.substring(
+                    0,
+                    numberOfCharactersForDescription
+                  ) + "..."
+                : noteDescription)}
           </p>
         );
       case "last_updated":

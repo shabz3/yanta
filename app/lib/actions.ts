@@ -2,7 +2,6 @@ import getSupabaseAccessToken from "./getSupabaseAccessToken";
 import supabaseClient from "./supabaseClient";
 import { Note } from "../components/table/Table";
 import { auth } from "@clerk/nextjs";
-import { totalmem } from "os";
 
 export async function editNote(
   noteId: number,
@@ -38,7 +37,6 @@ export async function editNote(
       };
     }
   }
-  console.log("formToUpdate() is: ", formToUpdate());
 
   const { data, error } = await supabase
     .from("Notes")

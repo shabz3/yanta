@@ -4,7 +4,7 @@ import moment from "moment";
 import getNotes from "../lib/data";
 import getSupabaseAccessToken from "../lib/getSupabaseAccessToken";
 import supabaseClient from "../lib/supabaseClient";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {
@@ -38,6 +38,7 @@ const sortNotesInLatestCreated = (data: Note[]) => {
 };
 
 export default async function Notes() {
+  noStore()
   let { data } = await getNotes();
   if (data === null) {
     data = [];

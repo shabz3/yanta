@@ -35,28 +35,30 @@ export default function Note({
     }
   }, []);
 
-  const debouncedTitle = useDebouncedCallback(async (newTitle) => {
-    if (newTitle === "") {
+  const debouncedTitle = useDebouncedCallback(async () => {
+    console.log("newTitle: ", title)
+    if (title === "") {
       setNoTitleText("Your note must have a title");
     } else {
       setNoTitleText("");
-      const newId = await changeTitle(newTitle, updatedNoteId);
+      const newId = await changeTitle(title, updatedNoteId);
       setUpdatedNoteId(newId);
     }
-  }, 600);
-  const debouncedDescription = useDebouncedCallback(async (newDescription) => {
-    const newId = await changeDescription(newDescription, updatedNoteId);
+  }, 300);
+  const debouncedDescription = useDebouncedCallback(async () => {
+    const newId = await changeDescription(description, updatedNoteId);
     if (updatedNoteId === 0) {
       setUpdatedNoteId(newId);
     }
-  }, 1000);
+  }, 300);
 
   function GoBackButton() {
     const { pending } = useFormStatus();
     return (
       <Button
-        color="success"
-        variant="ghost"
+        color="primary"
+        radius="lg"
+        variant="flat"
         isDisabled={pending}
         isLoading={pending}
         startContent={<BackIcon />}
@@ -76,7 +78,7 @@ export default function Note({
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
-              debouncedTitle(e.target.value);
+              debouncedTitle();
             }}
             className="block w-full"
             name="name"
@@ -88,7 +90,7 @@ export default function Note({
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);
-              debouncedDescription(e.target.value);
+              debouncedDescription();
             }}
             className="block w-full"
             classNames={{

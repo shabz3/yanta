@@ -36,7 +36,7 @@ export default function Page() {
       if (error) {
         throw new Error(`Error updating note: ${error}`);
       } else {
-        revalidatePath("/notes");
+        // revalidatePath("/notes");
         return (noteId = data![0].id);
       }
     }
@@ -53,7 +53,7 @@ export default function Page() {
       if (error) {
         throw new Error(`Error updating note: ${error}`);
       } else {
-        revalidatePath("/notes");
+        // revalidatePath("/notes");
         return (noteId = data![0].id);
       }
     }

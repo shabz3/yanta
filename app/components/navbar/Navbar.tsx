@@ -28,11 +28,13 @@ export default function NavBar() {
   const [menuItems, setMenuItems] = useState([
     {
       buttonName: "All Notes",
+      buttonIcon: AllNotesIcon,
       buttonPath: "/notes",
       buttonColor: "foreground",
     },
     {
       buttonName: "New Note",
+      buttonIcon: NewNoteIcon,
       buttonPath: "/notes/new",
       buttonColor: "foreground",
     },
@@ -139,7 +141,7 @@ export default function NavBar() {
           </NavbarItem>
         </NavbarContent>
         <NavbarMenu>
-          {menuItems.map(({ buttonName, buttonPath, buttonColor }, index) => (
+          {menuItems.map(({ buttonName, buttonIcon, buttonPath, buttonColor }, index) => (
             <NavbarMenuItem key={`${buttonPath}-${index}`}>
               <Link
                 href={buttonPath}
@@ -150,7 +152,7 @@ export default function NavBar() {
                   handleSetMenuItems(buttonName);
                 }}
               >
-                {buttonName}
+                {buttonName} &nbsp; {buttonIcon()}
               </Link>
             </NavbarMenuItem>
           ))}
