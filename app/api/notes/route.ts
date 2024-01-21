@@ -12,6 +12,5 @@ export async function GET() {
   // TODO #2: Replace with your database table name
 
   const { data, error } = await supabase.from("Notes").select("*");
-  console.log(data)
   return NextResponse.json({ notes: data, error });
 }

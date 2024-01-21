@@ -36,7 +36,6 @@ export default function Note({
   }, []);
 
   const debouncedTitle = useDebouncedCallback(async () => {
-    console.log("newTitle: ", title)
     if (title === "") {
       setNoTitleText("Your note must have a title");
     } else {
@@ -56,7 +55,7 @@ export default function Note({
     const { pending } = useFormStatus();
     return (
       <Button
-        color="primary"
+        className="dark:bg-gray-800 bg-main-color w-full"
         radius="lg"
         variant="flat"
         isDisabled={pending}
@@ -70,41 +69,46 @@ export default function Note({
   }
 
   return (
-    <div className="m-8">
-      <Card>
-        <CardHeader className="mb-6">
-          <Input
-            label="Title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              debouncedTitle();
-            }}
-            className="block w-full"
-            name="name"
-          />
-        </CardHeader>
-        <CardBody className="mb-6">
-          <Textarea
-            label="Description"
-            value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-              debouncedDescription();
-            }}
-            className="block w-full"
-            classNames={{
-              input: "resize-y min-h-[40px]",
-            }}
-            name="description"
-            disableAutosize
-          />
-          <p>{noTitleText}</p>
-        </CardBody>
-        <CardFooter className="mb-5">
+    <Card className="mt-20 mx-20 p-4" radius="lg">
+      <div className="space-y-20">
+        <div className="h-14">
+          <CardHeader>
+            <Input
+              label="Title"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                debouncedTitle();
+              }}
+              className="block w-full"
+              name="name"
+            />
+            <p className="ml-1 mt-1 italic text-red-700">
+              {noTitleText ? noTitleText : " "}
+            </p>
+          </CardHeader>
+        </div>
+        <div className="h-56">
+          <CardBody>
+            <Textarea
+              label="Description"
+              minRows={40}
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                debouncedDescription();
+              }}
+              className="block w-full"
+              name="description"
+            />
+          </CardBody>
+        </div>
+      </div>
+      <div className="mt-5">
+        <CardFooter>
           <GoBackButton />
         </CardFooter>
-      </Card>
-    </div>
+      </div>
+    </Card>
   );
 }

@@ -14,7 +14,6 @@ export async function editNote(
   const supabase = await supabaseClient(supabaseAccessToken);
   function formToUpdate() {
     if (description !== "" && title !== "") {
-      console.log("1");
       return {
         title,
         description,
@@ -22,14 +21,12 @@ export async function editNote(
         user_id: userId,
       };
     } else if (description === "") {
-      console.log("2");
       return {
         title,
         last_updated: dateNow,
         user_id: userId,
       };
     } else if (title === "") {
-      console.log("3");
       return {
         description,
         last_updated: dateNow,
@@ -43,7 +40,6 @@ export async function editNote(
     .update(formToUpdate())
     .eq("id", noteId)
     .select();
-  console.log("EDIT: ", data);
   return { data, error };
 }
 

@@ -6,6 +6,8 @@ import getSupabaseAccessToken from "../lib/getSupabaseAccessToken";
 import supabaseClient from "../lib/supabaseClient";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import NoteCell from "../components/Table/NoteCell";
+import { Suspense } from "react";
+import NoteCellSkeleton from "../components/Table/skeleton/NoteCellSkeleton";
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {
@@ -19,7 +21,6 @@ const formatDatesInRows = (rows: Note[]) => {
 
 export async function deleteNote(noteId: number) {
   "use server";
-  console.log("NOTE ID: ", noteId);
   const supabaseAccessToken = await getSupabaseAccessToken();
   const supabase = await supabaseClient(supabaseAccessToken);
   const { error } = await supabase.from("Notes").delete().eq("id", noteId);
@@ -46,7 +47,6 @@ export default async function Notes() {
   }
   sortNotesInLatestCreated(data);
   const notesData = formatDatesInRows(data);
-  console.log(notesData);
 
   const columns = [
     {
@@ -67,18 +67,19 @@ export default async function Notes() {
     },
   ];
   return (
-    <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
+    <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
       <>
         {notesData.map((note) => (
           <NoteCell
             key={note.id}
+            noteId={note.id}
             title={note.title}
             description={note.description}
             dateFormatted={note.last_updated}
+            deleteNote={deleteNote}
           />
         ))}
       </>
-      {/* <Table columns={columns} rows={notesData} deleteNote={deleteNote} /> */}
     </div>
   );
 }

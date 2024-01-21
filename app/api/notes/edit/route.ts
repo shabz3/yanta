@@ -8,7 +8,6 @@ export const dynamic = "force-dynamic"; // defaults to auto
 
 export async function POST(request: NextRequest) {
   const { userId } = getAuth(request);
-  console.log("<EDIT ROUTE> userId: ", userId);
 
   // check if API request was made by user
   if (!userId) {

@@ -17,7 +17,8 @@ import { usePathname } from "next/navigation";
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { MoonIcon, SunIcon } from "@heroicons/react/16/solid";
+import MoonIcon from "./MoonIcon";
+import SunIcon from "./SunIcon";
 import { NewNoteIcon } from "./NewNoteIcon";
 import { AllNotesIcon } from "./AllNotesIcons";
 
@@ -39,6 +40,8 @@ export default function NavBar() {
       buttonColor: "foreground",
     },
   ]);
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
   useEffect(() => {
     const updatedButtons = menuItems.map((menuItem) => {
       if (menuItem.buttonPath === currentRoute) {
@@ -49,8 +52,6 @@ export default function NavBar() {
     });
     setMenuItems(updatedButtons);
   }, [currentRoute]);
-  const { systemTheme, theme, setTheme } = useTheme();
-  const currentTheme = theme === "system" ? systemTheme : theme;
 
   function handleSetMenuItems(buttonPath: string) {
     const updatedMenuItems = menuItems.map((menuItem) => {
@@ -80,6 +81,7 @@ export default function NavBar() {
   return (
     <>
       <Navbar
+        isBordered={true}
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
         classNames={{
@@ -95,7 +97,7 @@ export default function NavBar() {
             "data-[active=true]:after:right-0",
             "data-[active=true]:after:h-[2px]",
             "data-[active=true]:after:rounded-[2px]",
-            "data-[active=true]:after:bg-primary",
+            "data-[active=true]:after:bg-main-color",
           ],
         }}
       >
@@ -111,7 +113,12 @@ export default function NavBar() {
           <NavbarItem isActive={currentRoute === "/notes" ? true : false}>
             <Link
               href="/notes"
-              color={currentRoute === "/notes" ? "primary" : "foreground"}
+              className={
+                currentRoute === "/notes"
+                  ? "text-main-color"
+                  : "dark:text-white text-gray-800"
+              }
+              // color={currentRoute === "/notes" ? "primary" : "foreground"}
             >
               All Notes &nbsp; {<AllNotesIcon />}
             </Link>
@@ -119,7 +126,12 @@ export default function NavBar() {
           <NavbarItem isActive={currentRoute === "/notes/new" ? true : false}>
             <Link
               href="/notes/new"
-              color={currentRoute === "/notes/new" ? "primary" : "foreground"}
+              className={
+                currentRoute === "/notes/new"
+                  ? "text-main-color"
+                  : "dark:text-white text-gray-800"
+              }
+              // color={currentRoute === "/notes/new" ? "primary" : "foreground"}
             >
               New Note &nbsp; {<NewNoteIcon />}
             </Link>
@@ -131,7 +143,7 @@ export default function NavBar() {
           </NavbarItem>
           <NavbarItem>
             <Button
-              variant="light"
+              variant="ghost"
               onClick={() =>
                 currentTheme == "dark" ? setTheme("light") : setTheme("dark")
               }
@@ -141,21 +153,23 @@ export default function NavBar() {
           </NavbarItem>
         </NavbarContent>
         <NavbarMenu>
-          {menuItems.map(({ buttonName, buttonIcon, buttonPath, buttonColor }, index) => (
-            <NavbarMenuItem key={`${buttonPath}-${index}`}>
-              <Link
-                href={buttonPath}
-                className="w-full"
-                size="lg"
-                color={buttonColor}
-                onPress={() => {
-                  handleSetMenuItems(buttonName);
-                }}
-              >
-                {buttonName} &nbsp; {buttonIcon()}
-              </Link>
-            </NavbarMenuItem>
-          ))}
+          {menuItems.map(
+            ({ buttonName, buttonIcon, buttonPath, buttonColor }, index) => (
+              <NavbarMenuItem key={`${buttonPath}-${index}`}>
+                <Link
+                  href={buttonPath}
+                  className="w-full"
+                  size="lg"
+                  color={buttonColor}
+                  onPress={() => {
+                    handleSetMenuItems(buttonName);
+                  }}
+                >
+                  {buttonName} &nbsp; {buttonIcon()}
+                </Link>
+              </NavbarMenuItem>
+            )
+          )}
         </NavbarMenu>
       </Navbar>
       <Spacer x={4} />

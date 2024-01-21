@@ -11,7 +11,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import { PlusIcon } from "./PlusIcon";
-import { DeleteIcon } from "./DeleteIcon";
+import { TrashIcon } from "../Table/TrashIcon";
 import { Link } from "@nextui-org/react";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -91,7 +91,7 @@ export default function App({
             <Tooltip color="danger" content="Delete note">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
                 <button onClick={() => deleteNote(noteId)}>
-                  <DeleteIcon />
+                  <TrashIcon />
                 </button>
               </span>
             </Tooltip>

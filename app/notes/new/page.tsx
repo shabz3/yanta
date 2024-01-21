@@ -1,8 +1,11 @@
-import Note3 from "../../components/note/Card";
+import Note from "../../components/note/Card";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
 import { createNote, editNote } from "@/app/lib/actions";
 import { revalidatePath } from "next/cache";
+import { Suspense } from "react";
+import CardSkeleton from "@/app/components/note/skeleton/CardSkeleton";
+import NoteCellSkeleton from "@/app/components/Table/skeleton/NoteCellSkeleton";
 
 export default function Page() {
   async function newNote(
@@ -23,15 +26,11 @@ export default function Page() {
 
   async function changeTitle(newTitle: string, noteId: number) {
     "use server";
-    console.log("first getting into noteId. It is: ", noteId);
     const dateNow = new Date().toISOString();
     if (noteId === 0) {
-      console.log("going to call newNote()");
       const newNoteId = await newNote(newTitle, "", dateNow);
       return newNoteId;
     } else {
-      console.log("noteId going to the db is: ", noteId);
-      console.log("Note has already been created. Going to edit instead...");
       const { data, error } = await editNote(noteId, newTitle, "", dateNow);
       if (error) {
         throw new Error(`Error updating note: ${error}`);
@@ -49,7 +48,12 @@ export default function Page() {
       const newNoteId = await newNote("", newDescription, dateNow);
       return newNoteId;
     } else {
-      const { data, error } = await editNote(noteId, "", newDescription, dateNow);
+      const { data, error } = await editNote(
+        noteId,
+        "",
+        newDescription,
+        dateNow
+      );
       if (error) {
         throw new Error(`Error updating note: ${error}`);
       } else {
@@ -59,12 +63,15 @@ export default function Page() {
     }
   }
   return (
-    <Note3
-      noteId={0}
-      notesTitle=""
-      notesDescription=""
-      changeTitle={changeTitle}
-      changeDescription={changeDescription}
-    />
+    <>
+      
+      <Note
+        noteId={0}
+        notesTitle=""
+        notesDescription=""
+        changeTitle={changeTitle}
+        changeDescription={changeDescription}
+      />
+    </>
   );
 }

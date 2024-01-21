@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs";
 import getNotes from "../../lib/data";
 import { editNote } from "@/app/lib/actions";
 import { revalidatePath, revalidateTag } from "next/cache";
+import CardSkeleton from "@/app/components/note/skeleton/CardSkeleton";
 
 export default async function SingleNote({
   params,
@@ -44,12 +45,14 @@ export default async function SingleNote({
   }
 
   return (
-    <NoteCard
-      noteId={noteId}
-      notesTitle={title}
-      notesDescription={description}
-      changeTitle={changeTitle}
-      changeDescription={changeDescription}
-    />
+    <>
+      <NoteCard
+        noteId={noteId}
+        notesTitle={title}
+        notesDescription={description}
+        changeTitle={changeTitle}
+        changeDescription={changeDescription}
+      />
+    </>
   );
 }
