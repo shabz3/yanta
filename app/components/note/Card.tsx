@@ -83,10 +83,10 @@ export default function Note({
               className="block w-full"
               name="name"
             />
-            <p className="ml-1 mt-1 italic text-red-700">
+          </CardHeader>
+            <p className="ml-3 mt-1 italic text-red-700">
               {noTitleText ? noTitleText : " "}
             </p>
-          </CardHeader>
         </div>
         <div className="h-56">
           <CardBody>
