@@ -1,6 +1,6 @@
 import getSupabaseAccessToken from "./getSupabaseAccessToken";
 import supabaseClient from "./supabaseClient";
-import { Note } from "../components/table/Table";
+import { Note } from "../components/_table/Table";
 import { auth } from "@clerk/nextjs";
 
 export async function editNote(

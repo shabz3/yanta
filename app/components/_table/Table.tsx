@@ -11,7 +11,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import { PlusIcon } from "./PlusIcon";
-import { TrashIcon } from "../Table/TrashIcon";
+import { TrashIcon } from "../icons/TrashIcon";
 import { Link } from "@nextui-org/react";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";

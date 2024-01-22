@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import { Note } from "../../../components/table/Table";
+import { Note } from "../../../components/_table/Table";
 import { revalidatePath } from "next/cache";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";

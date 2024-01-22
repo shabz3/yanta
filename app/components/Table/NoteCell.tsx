@@ -13,9 +13,9 @@ import {
   Input,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import EllipsisVerticalIcon from "./EllipsisVerticalIcon";
-import { TrashIcon } from "./TrashIcon";
-import PencilIcon from "./PencilIcon";
+import EllipsisVerticalIcon from "../icons/EllipsisVerticalIcon";
+import { TrashIcon } from "../icons/TrashIcon";
+import PencilIcon from "../icons/PencilIcon";
 
 export default function NoteCell({
   noteId,

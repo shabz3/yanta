@@ -1,5 +1,5 @@
-import Table from "../components/table/Table";
-import { Note } from "../components/table/Table";
+import Table from "../components/_table/Table";
+import { Note } from "../components/_table/Table";
 import moment from "moment";
 import getNotes from "../lib/data";
 import getSupabaseAccessToken from "../lib/getSupabaseAccessToken";

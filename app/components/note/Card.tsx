@@ -6,7 +6,7 @@ import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import BackIcon from "./BackIcon";
+import BackIcon from "../icons/BackIcon";
 import { useDebouncedCallback } from "use-debounce";
 
 // (newValue: string) => void means that that setTitle is a function that takes a string as an argument (called `newValue`) and returns `void`

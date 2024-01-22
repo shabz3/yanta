@@ -12,15 +12,15 @@ import {
   NavbarMenuItem,
   Spinner,
 } from "@nextui-org/react";
-import { AcmeLogo } from "./AcmeLogo";
+import { AcmeLogo } from "../icons/AcmeLogo";
 import { usePathname } from "next/navigation";
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import MoonIcon from "./MoonIcon";
-import SunIcon from "./SunIcon";
-import { NewNoteIcon } from "./NewNoteIcon";
-import { AllNotesIcon } from "./AllNotesIcons";
+import MoonIcon from "../icons/MoonIcon";
+import SunIcon from "../icons/SunIcon";
+import { NewNoteIcon } from "../icons/NewNoteIcon";
+import { AllNotesIcon } from "../icons/AllNotesIcons";
 
 export default function NavBar() {
   const currentRoute = usePathname();
