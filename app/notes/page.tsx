@@ -1,5 +1,4 @@
-import Table from "../components/_table/Table";
-import { Note } from "../components/_table/Table";
+import { Note } from "../lib/definitions";
 import moment from "moment";
 import getNotes from "../lib/data";
 import getSupabaseAccessToken from "../lib/getSupabaseAccessToken";
@@ -8,6 +7,7 @@ import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import NoteCell from "../components/Table/NoteCell";
 import { Suspense } from "react";
 import NoteCellSkeleton from "../components/Table/skeleton/NoteCellSkeleton";
+import { deleteNote } from "../lib/actions";
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {
@@ -19,8 +19,13 @@ const formatDatesInRows = (rows: Note[]) => {
   });
 };
 
-export async function deleteNote(noteId: number) {
+async function noteDeletion(noteId: number) {
   "use server";
+  // const { error } = await deleteNote(noteId);
+  // if (error) {
+  //   throw new Error(`Error deleting note: ${error}`);
+  // }
+  // revalidatePath("/notes");
   const supabaseAccessToken = await getSupabaseAccessToken();
   const supabase = await supabaseClient(supabaseAccessToken);
   const { error } = await supabase.from("Notes").delete().eq("id", noteId);
@@ -37,6 +42,7 @@ const sortNotesInLatestCreated = (data: Note[]) => {
 
     return dateB - dateA;
   });
+
 };
 
 export default async function Notes() {
@@ -48,24 +54,6 @@ export default async function Notes() {
   sortNotesInLatestCreated(data);
   const notesData = formatDatesInRows(data);
 
-  const columns = [
-    {
-      key: "title",
-      label: "Title",
-    },
-    {
-      key: "description",
-      label: "Brief Description",
-    },
-    {
-      key: "last_updated",
-      label: "Last Updated",
-    },
-    {
-      key: "actions",
-      label: "Actions",
-    },
-  ];
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
       <>
@@ -76,7 +64,7 @@ export default async function Notes() {
             title={note.title}
             description={note.description}
             dateFormatted={note.last_updated}
-            deleteNote={deleteNote}
+            noteDeletion={noteDeletion}
           />
         ))}
       </>

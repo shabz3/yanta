@@ -1,5 +1,5 @@
 import NoteCard from "../../components/note/Card";
-import { Note } from "@/app/components/table/Table";
+import { Note } from "../../lib/definitions";
 import { auth } from "@clerk/nextjs";
 import getNotes from "../../lib/data";
 import { editNote } from "@/app/lib/actions";
@@ -28,7 +28,7 @@ export default async function SingleNote({
     if (error) {
       throw new Error(`Error updating note: ${error}`);
     } else {
-      // revalidatePath("/notes");
+      revalidatePath("/notes");
       return noteId;
     }
   }
@@ -39,7 +39,7 @@ export default async function SingleNote({
     if (error) {
       throw new Error(`Error updating note: ${error}`);
     } else {
-      // revalidatePath("/notes");
+      revalidatePath("/notes");
       return noteId;
     }
   }

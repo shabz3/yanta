@@ -18,9 +18,8 @@ export default function Page() {
     if (error) {
       throw new Error(`Error updating note: ${error}`);
     } else {
-      revalidatePath("/notes");
-
-      return data![0].id;
+      const newNoteId = data![0].id;
+      return newNoteId;
     }
   }
 
@@ -28,15 +27,19 @@ export default function Page() {
     "use server";
     const dateNow = new Date().toISOString();
     if (noteId === 0) {
+      console.log("going to run 'newNote()'");
       const newNoteId = await newNote(newTitle, "", dateNow);
+      revalidatePath("/");
       return newNoteId;
     } else {
+      console.log("this note has existed before...");
       const { data, error } = await editNote(noteId, newTitle, "", dateNow);
       if (error) {
         throw new Error(`Error updating note: ${error}`);
       } else {
-        // revalidatePath("/notes");
-        return (noteId = data![0].id);
+        revalidatePath("/notes");
+        const noteId = data![0].id;
+        return noteId;
       }
     }
   }
@@ -46,6 +49,7 @@ export default function Page() {
     const dateNow = new Date().toISOString();
     if (noteId === 0) {
       const newNoteId = await newNote("", newDescription, dateNow);
+      revalidatePath("/notes");
       return newNoteId;
     } else {
       const { data, error } = await editNote(
@@ -57,14 +61,14 @@ export default function Page() {
       if (error) {
         throw new Error(`Error updating note: ${error}`);
       } else {
-        // revalidatePath("/notes");
-        return (noteId = data![0].id);
+        revalidatePath("/notes");
+        const noteId = data![0].id;
+        return noteId;
       }
     }
   }
   return (
     <>
-      
       <Note
         noteId={0}
         notesTitle=""

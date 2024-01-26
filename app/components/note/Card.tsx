@@ -32,22 +32,24 @@ export default function Note({
   useEffect(() => {
     if (title === "") {
       setNoTitleText("Your note must have a title");
-    }
-  }, []);
-
-  const debouncedTitle = useDebouncedCallback(async () => {
-    if (title === "") {
-      setNoTitleText("Your note must have a title");
     } else {
       setNoTitleText("");
-      const newId = await changeTitle(title, updatedNoteId);
+    }
+  }, [title]);
+
+  const debouncedTitle = useDebouncedCallback(async () => {
+    console.log("updatedNoteId: ", updatedNoteId);
+    const newId = await changeTitle(title, updatedNoteId);
+    if (updatedNoteId === 0) {
       setUpdatedNoteId(newId);
     }
   }, 300);
   const debouncedDescription = useDebouncedCallback(async () => {
-    const newId = await changeDescription(description, updatedNoteId);
-    if (updatedNoteId === 0) {
-      setUpdatedNoteId(newId);
+    if (noTitleText === "") {
+      const newId = await changeDescription(description, updatedNoteId);
+      if (updatedNoteId === 0) {
+        setUpdatedNoteId(newId);
+      }
     }
   }, 300);
 
@@ -77,16 +79,16 @@ export default function Note({
               label="Title"
               value={title}
               onChange={(e) => {
-                setTitle(e.target.value);
                 debouncedTitle();
+                setTitle(e.target.value);
               }}
               className="block w-full"
               name="name"
             />
           </CardHeader>
-            <p className="ml-3 mt-1 italic text-red-700">
-              {noTitleText ? noTitleText : " "}
-            </p>
+          <p className="ml-3 mt-1 italic text-red-700">
+            {noTitleText ? noTitleText : " "}
+          </p>
         </div>
         <div className="h-56">
           <CardBody>

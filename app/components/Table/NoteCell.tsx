@@ -22,28 +22,32 @@ export default function NoteCell({
   title,
   description,
   dateFormatted,
-  deleteNote,
+  noteDeletion,
 }: {
   noteId: number;
   title: string;
   description: string;
   dateFormatted: string;
-  deleteNote: (noteId: number) => void;
+  noteDeletion: (noteId: number) => void;
 }) {
   const router = useRouter();
   return (
     <div className="align-middle mx-10">
-      <Card className="py-4 px-2 mx-3 mt-4 mb-1">
-        <CardHeader className="py-2 h-8 flex-col items-start">
-          <h4 className="dark:text-gray-300 text-main-color font-bold text-xl ">
-            {title}
-          </h4>
+      <Card className="py-4 px-2 mx-3 mt-4 mb-4">
+        <CardHeader>
+          <div className="w-full text-center py-2 h-12 mb-4 flex-col rounded-lg dark:border-gray-800 bg-stone-200 dark:bg-zinc-800">
+            <h4 className="px-1 truncate dark:text-gray-300 text-main-color font-bold text-xl">
+              {title}
+            </h4>
+          </div>
         </CardHeader>
 
-        <CardBody className="py-2">
-          <p className="h-32 text-sm break-words text-wrap overflow-ellipsis overflow-hidden dark:text-gray-300 text-gray-800">
-            {description}
-          </p>
+        <CardBody>
+          <div className="h-32 overflow-hidden text-clip rounded-lg p-4 bg-stone-200 dark:bg-zinc-800">
+            <p className=" text-sm dark:text-gray-300 text-gray-800">
+              {description}
+            </p>
+          </div>
         </CardBody>
       </Card>
       <div className="items-stretch">
@@ -55,19 +59,19 @@ export default function NoteCell({
                 <EllipsisVerticalIcon />
               </Link>
             </PopoverTrigger>
-            <PopoverContent className=" bg-gray-800">
+            <PopoverContent className=" bg-neutral-700">
               <div className=" px-1 py-2 w-full">
                 <div className="mt-2 flex flex-col gap-2 w-full">
                   <Button
-                    className="w-full"
+                    className="w-full bg-zinc-800"
                     onClick={() => router.push(`/notes/${noteId}`)}
                   >
                     Edit Note <PencilIcon />
                   </Button>
 
                   <Button
-                    className="w-full text-danger cursor-pointer active:opacity-50"
-                    onClick={() => deleteNote(noteId)}
+                    className="w-full text-danger cursor-pointer active:opacity-50 bg-zinc-800"
+                    onClick={() => noteDeletion(noteId)}
                   >
                     Delete Note <TrashIcon />
                   </Button>

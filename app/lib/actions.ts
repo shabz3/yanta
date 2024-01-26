@@ -1,7 +1,9 @@
 import getSupabaseAccessToken from "./getSupabaseAccessToken";
 import supabaseClient from "./supabaseClient";
-import { Note } from "../components/_table/Table";
+import { Note } from "./definitions";
 import { auth } from "@clerk/nextjs";
+import { newNote } from "./definitions";
+import { revalidatePath } from "next/cache";
 
 export async function editNote(
   noteId: number,
@@ -40,12 +42,13 @@ export async function editNote(
     .update(formToUpdate())
     .eq("id", noteId)
     .select();
+  console.log("data is editNote() is: ", data);
   return { data, error };
 }
 
 export async function createNote(
-  title: FormDataEntryValue | null,
-  description: FormDataEntryValue | null,
+  title: string | null,
+  description: string | null,
   dateNow: string
 ) {
   const { userId } = auth();
@@ -60,5 +63,12 @@ export async function createNote(
       user_id: userId,
     })
     .select();
+  console.log("data is createNote() is: ", data);
   return { data, error };
+}
+export async function deleteNote(noteId: number) {
+  const supabaseAccessToken = await getSupabaseAccessToken();
+  const supabase = await supabaseClient(supabaseAccessToken);
+  const { error } = await supabase.from("Notes").delete().eq("id", noteId);
+  return { error };
 }

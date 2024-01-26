@@ -72,7 +72,7 @@ export default function NavBar() {
       return <Spinner color="default" />;
     }
     return (
-      <Button as={Link} href="/notes">
+      <Button as={Link} href="/notes" variant="bordered">
         Login/Sign Up
       </Button>
     );
@@ -106,8 +106,10 @@ export default function NavBar() {
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             className="sm:hidden"
           />
-          <AcmeLogo />
-          <p className="font-bold text-inherit">ACME</p>
+          <Link href="/">
+            <AcmeLogo />
+            <p className="font-bold text-inherit">ACME</p>
+          </Link>
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem isActive={currentRoute === "/notes" ? true : false}>
