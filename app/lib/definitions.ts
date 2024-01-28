@@ -13,3 +13,17 @@ export interface newNote {
   user_id: string;
 }
 [];
+
+export interface hamburgerMenuItems {
+  buttonName: string;
+  buttonIcon: JSX.Element;
+  buttonPath: string;
+  buttonColor:
+    | "foreground"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "danger"
+    | undefined;
+}

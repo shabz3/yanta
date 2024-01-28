@@ -71,7 +71,7 @@ export default function Note({
   }
 
   return (
-    <Card className="mt-20 mx-20 p-4" radius="lg">
+    <Card className="mt-20 mx-14 p-4" radius="lg">
       <div className="space-y-20">
         <div className="h-14">
           <CardHeader>

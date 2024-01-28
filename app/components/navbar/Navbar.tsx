@@ -23,12 +23,13 @@ import { AllNotesIcon } from "../icons/AllNotesIcons";
 import logo from "@/public/logo.png";
 import Image, { StaticImageData } from "next/image";
 import { escape } from "querystring";
+import { hamburgerMenuItems } from "@/app/lib/definitions";
 
 export default function NavBar() {
   const currentRoute = usePathname();
   const { isSignedIn } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState([
+  const initialMenuItems: hamburgerMenuItems[] = [
     {
       buttonName: "All Notes",
       buttonIcon: <AllNotesIcon />,
@@ -41,7 +42,9 @@ export default function NavBar() {
       buttonPath: "/notes/new",
       buttonColor: "foreground",
     },
-  ]);
+  ];
+  const [menuItems, setMenuItems] =
+    useState<hamburgerMenuItems[]>(initialMenuItems);
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   useEffect(() => {
@@ -50,7 +53,7 @@ export default function NavBar() {
   }, []);
 
   useEffect(() => {
-    const updatedButtons = menuItems.map((menuItem) => {
+    const updatedButtons: hamburgerMenuItems[] = menuItems.map((menuItem) => {
       if (menuItem.buttonPath === currentRoute) {
         return { ...menuItem, buttonColor: "primary" };
       } else {
@@ -60,9 +63,9 @@ export default function NavBar() {
     setMenuItems(updatedButtons);
   }, [currentRoute]);
 
-  function handleSetMenuItems(buttonPath: string) {
-    const updatedMenuItems = menuItems.map((menuItem) => {
-      if (menuItem.buttonPath === buttonPath) {
+  function handleSetMenuItems(buttonName: string) {
+    const updatedMenuItems: hamburgerMenuItems[] = menuItems.map((menuItem) => {
+      if (menuItem.buttonName === buttonName) {
         return { ...menuItem, buttonColor: "primary" };
       } else {
         return { ...menuItem, buttonColor: "foreground" };
@@ -91,6 +94,7 @@ export default function NavBar() {
     } else {
       return (
         <Button
+          isIconOnly
           variant="ghost"
           onClick={() =>
             resolvedTheme === "dark" ? setTheme("light") : setTheme("dark")
@@ -175,7 +179,7 @@ export default function NavBar() {
           <NavbarItem className="ml-4">
             <DisplayLoginButton />
           </NavbarItem>
-          <NavbarItem className="r-4">
+          <NavbarItem>
             <ToggleThemeButton />
           </NavbarItem>
         </NavbarContent>
