@@ -21,12 +21,21 @@ import MoonIcon from "../icons/MoonIcon";
 import SunIcon from "../icons/SunIcon";
 import { NewNoteIcon } from "../icons/NewNoteIcon";
 import { AllNotesIcon } from "../icons/AllNotesIcons";
+import Image from "next/image";
+import darkLogo from "@/public/yanta-dark-mode.png";
+import lightLogo from "@/public/logo-light-mode.png";
 
 export default function NavBar() {
   const currentRoute = usePathname();
   const { isLoaded, isSignedIn } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([
+    // {
+    //   buttonName: "Home",
+    //   buttonIcon: AllNotesIcon,
+    //   buttonPath: "/notes",
+    //   buttonColor: "foreground",
+    // }
     {
       buttonName: "All Notes",
       buttonIcon: AllNotesIcon,
@@ -101,16 +110,23 @@ export default function NavBar() {
           ],
         }}
       >
-        <NavbarBrand>
+        <NavbarContent>
           <NavbarMenuToggle
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             className="sm:hidden"
           />
-          <Link href="/">
-            <AcmeLogo />
-            <p className="font-bold text-inherit">ACME</p>
-          </Link>
-        </NavbarBrand>
+          <NavbarBrand>
+            <Link href="/">
+              <Image
+              className="content-center px-1"
+                src={currentTheme === "dark" ? darkLogo : lightLogo}
+                width={140}
+                height={140}
+                alt="Yanta logo"
+              />
+            </Link>
+          </NavbarBrand>
+        </NavbarContent>
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem isActive={currentRoute === "/notes" ? true : false}>
             <Link

@@ -8,9 +8,6 @@ import {
   PopoverContent,
   Button,
   Link,
-  Listbox,
-  ListboxItem,
-  Input,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import EllipsisVerticalIcon from "../icons/EllipsisVerticalIcon";
@@ -32,8 +29,8 @@ export default function NoteCell({
 }) {
   const router = useRouter();
   return (
-    <div className="align-middle mx-10">
-      <Card className="py-4 px-2 mx-3 mt-4 mb-4">
+    <div className="mb-5 pt-4">
+      <Card className="align-middle py-4 px-2 mx-10">
         <CardHeader>
           <div className="w-full text-center py-2 h-12 mb-4 flex-col rounded-lg dark:border-gray-800 bg-stone-200 dark:bg-zinc-800">
             <h4 className="px-1 truncate dark:text-gray-300 text-main-color font-bold text-xl">
@@ -43,15 +40,15 @@ export default function NoteCell({
         </CardHeader>
 
         <CardBody>
-          <div className="h-32 overflow-hidden text-clip rounded-lg p-4 bg-stone-200 dark:bg-zinc-800">
-            <p className=" text-sm dark:text-gray-300 text-gray-800">
+          <div className="block h-32  overflow-hidden rounded-lg p-4 bg-stone-200 dark:bg-zinc-800">
+            <p className="line-clamp-5 text-sm dark:text-gray-300 text-gray-800">
               {description}
             </p>
           </div>
         </CardBody>
       </Card>
       <div className="items-stretch">
-        <p className="py-2 text-center text-sm text-main-color font-semibold">
+        <p className="pt-4 pb-2 text-center text-sm text-main-color font-semibold">
           Edited {dateFormatted}{" "}
           <Popover showArrow={true}>
             <PopoverTrigger>
