@@ -5,7 +5,10 @@ import { Providers } from "./providers";
 import NavBar from "./components/navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
-// const poppins = Poppins({  });
+const poppins = Poppins({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={inter.className}>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className={poppins.className}>
         <Providers>
           <NavBar />
           {children}

@@ -12,7 +12,6 @@ import {
   NavbarMenuItem,
   Spinner,
 } from "@nextui-org/react";
-import { AcmeLogo } from "../icons/AcmeLogo";
 import { usePathname } from "next/navigation";
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
@@ -21,36 +20,35 @@ import MoonIcon from "../icons/MoonIcon";
 import SunIcon from "../icons/SunIcon";
 import { NewNoteIcon } from "../icons/NewNoteIcon";
 import { AllNotesIcon } from "../icons/AllNotesIcons";
-import Image from "next/image";
-import darkLogo from "@/public/yanta-dark-mode.png";
-import lightLogo from "@/public/logo-light-mode.png";
+import logo from "@/public/logo.png";
+import Image, { StaticImageData } from "next/image";
+import { escape } from "querystring";
 
 export default function NavBar() {
   const currentRoute = usePathname();
-  const { isLoaded, isSignedIn } = useAuth();
+  const { isSignedIn } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([
-    // {
-    //   buttonName: "Home",
-    //   buttonIcon: AllNotesIcon,
-    //   buttonPath: "/notes",
-    //   buttonColor: "foreground",
-    // }
     {
       buttonName: "All Notes",
-      buttonIcon: AllNotesIcon,
+      buttonIcon: <AllNotesIcon />,
       buttonPath: "/notes",
       buttonColor: "foreground",
     },
     {
       buttonName: "New Note",
-      buttonIcon: NewNoteIcon,
+      buttonIcon: <NewNoteIcon />,
       buttonPath: "/notes/new",
       buttonColor: "foreground",
     },
   ]);
-  const { systemTheme, theme, setTheme } = useTheme();
-  const currentTheme = theme === "system" ? systemTheme : theme;
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
+  useEffect(() => {
+    setMounted(true);
+    resolvedTheme === "light" ? setTheme("light") : setTheme("dark");
+  }, []);
+
   useEffect(() => {
     const updatedButtons = menuItems.map((menuItem) => {
       if (menuItem.buttonPath === currentRoute) {
@@ -87,9 +85,26 @@ export default function NavBar() {
     );
   }
 
+  function ToggleThemeButton() {
+    if (!mounted) {
+      return <Spinner color="default" />;
+    } else {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() =>
+            resolvedTheme === "dark" ? setTheme("light") : setTheme("dark")
+          }
+        >
+          {resolvedTheme === "light" ? <MoonIcon /> : <SunIcon />}
+        </Button>
+      );
+    }
+  }
   return (
     <>
       <Navbar
+        className="flex space-x-6"
         isBordered={true}
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
@@ -115,15 +130,18 @@ export default function NavBar() {
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             className="sm:hidden"
           />
-          <NavbarBrand>
+          <NavbarBrand className="mx-4">
             <Link href="/">
               <Image
-              className="content-center px-1"
-                src={currentTheme === "dark" ? darkLogo : lightLogo}
-                width={140}
-                height={140}
+                className="content-center h-auto w-auto"
+                src={logo}
+                width={40}
+                height={40}
                 alt="Yanta logo"
               />
+              <h1 className="text-4xl font-semibold mx-2 dark:text-white text-black">
+                <span className="text-main-color">y</span>anta
+              </h1>
             </Link>
           </NavbarBrand>
         </NavbarContent>
@@ -136,7 +154,6 @@ export default function NavBar() {
                   ? "text-main-color"
                   : "dark:text-white text-gray-800"
               }
-              // color={currentRoute === "/notes" ? "primary" : "foreground"}
             >
               All Notes &nbsp; {<AllNotesIcon />}
             </Link>
@@ -149,25 +166,17 @@ export default function NavBar() {
                   ? "text-main-color"
                   : "dark:text-white text-gray-800"
               }
-              // color={currentRoute === "/notes/new" ? "primary" : "foreground"}
             >
               New Note &nbsp; {<NewNoteIcon />}
             </Link>
           </NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
-          <NavbarItem>
+          <NavbarItem className="ml-4">
             <DisplayLoginButton />
           </NavbarItem>
-          <NavbarItem>
-            <Button
-              variant="ghost"
-              onClick={() =>
-                currentTheme == "dark" ? setTheme("light") : setTheme("dark")
-              }
-            >
-              {currentTheme === "light" ? <MoonIcon /> : <SunIcon />}
-            </Button>
+          <NavbarItem className="r-4">
+            <ToggleThemeButton />
           </NavbarItem>
         </NavbarContent>
         <NavbarMenu>
@@ -179,11 +188,11 @@ export default function NavBar() {
                   className="w-full"
                   size="lg"
                   color={buttonColor}
-                  onPress={() => {
+                  onClick={() => {
                     handleSetMenuItems(buttonName);
                   }}
                 >
-                  {buttonName} &nbsp; {buttonIcon()}
+                  {buttonName} &nbsp; {buttonIcon}
                 </Link>
               </NavbarMenuItem>
             )
