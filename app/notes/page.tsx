@@ -42,7 +42,6 @@ const sortNotesInLatestCreated = (data: Note[]) => {
 
     return dateB - dateA;
   });
-
 };
 
 export default async function Notes() {
@@ -56,18 +55,16 @@ export default async function Notes() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
-      <>
-        {notesData.map((note) => (
-          <NoteCell
-            key={note.id}
-            noteId={note.id}
-            title={note.title}
-            description={note.description}
-            dateFormatted={note.last_updated}
-            noteDeletion={noteDeletion}
-          />
-        ))}
-      </>
+      {notesData.map((note) => (
+        <NoteCell
+          key={note.id}
+          noteId={note.id}
+          title={note.title}
+          description={note.description}
+          dateFormatted={note.last_updated}
+          noteDeletion={noteDeletion}
+        />
+      ))}
     </div>
   );
 }
