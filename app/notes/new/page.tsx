@@ -6,6 +6,11 @@ import { revalidatePath } from "next/cache";
 import { Suspense } from "react";
 import CardSkeleton from "@/app/components/note/skeleton/CardSkeleton";
 import NoteCellSkeleton from "@/app/components/Table/skeleton/NoteCellSkeleton";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'New Note',
+};
 
 export default function Page() {
   async function newNote(

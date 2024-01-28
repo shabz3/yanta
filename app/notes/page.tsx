@@ -8,6 +8,11 @@ import NoteCell from "../components/Table/NoteCell";
 import { Suspense } from "react";
 import NoteCellSkeleton from "../components/Table/skeleton/NoteCellSkeleton";
 import { deleteNote } from "../lib/actions";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'All Notes',
+};
 
 const formatDatesInRows = (rows: Note[]) => {
   return rows.map((row) => {

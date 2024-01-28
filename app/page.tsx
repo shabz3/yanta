@@ -1,4 +1,3 @@
-import getNotes from "./lib/data";
 import { Image } from "@nextui-org/react";
 import NextImage from "next/image";
 
