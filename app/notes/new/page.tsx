@@ -6,10 +6,10 @@ import { revalidatePath } from "next/cache";
 import { Suspense } from "react";
 import CardSkeleton from "@/app/components/note/skeleton/CardSkeleton";
 import NoteCellSkeleton from "@/app/components/Table/skeleton/NoteCellSkeleton";
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'New Note',
+  title: "New Note",
 };
 
 export default function Page() {
@@ -30,6 +30,9 @@ export default function Page() {
 
   async function changeTitle(newTitle: string, noteId: number) {
     "use server";
+    if (newTitle === "") {
+      throw new Error("Title cannot be empty");
+    }
     const dateNow = new Date().toISOString();
     if (noteId === 0) {
       console.log("going to run 'newNote()'");

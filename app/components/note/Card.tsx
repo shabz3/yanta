@@ -38,14 +38,15 @@ export default function Note({
   }, [title]);
 
   const debouncedTitle = useDebouncedCallback(async () => {
-    console.log("updatedNoteId: ", updatedNoteId);
-    const newId = await changeTitle(title, updatedNoteId);
-    if (updatedNoteId === 0) {
-      setUpdatedNoteId(newId);
+    if (title !== "") {
+      const newId = await changeTitle(title, updatedNoteId);
+      if (updatedNoteId === 0) {
+        setUpdatedNoteId(newId);
+      }
     }
   }, 300);
   const debouncedDescription = useDebouncedCallback(async () => {
-    if (noTitleText === "") {
+    if (title !== "") {
       const newId = await changeDescription(description, updatedNoteId);
       if (updatedNoteId === 0) {
         setUpdatedNoteId(newId);
@@ -79,8 +80,8 @@ export default function Note({
               label="Title"
               value={title}
               onChange={(e) => {
-                debouncedTitle();
                 setTitle(e.target.value);
+                debouncedTitle();
               }}
               className="block w-full"
               name="name"
@@ -106,11 +107,9 @@ export default function Note({
           </CardBody>
         </div>
       </div>
-      <div className="mt-5">
-        <CardFooter>
-          <GoBackButton />
-        </CardFooter>
-      </div>
+      <CardFooter className="mt-5">
+        <GoBackButton />
+      </CardFooter>
     </Card>
   );
 }

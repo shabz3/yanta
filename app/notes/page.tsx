@@ -6,12 +6,12 @@ import supabaseClient from "../lib/supabaseClient";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import NoteCell from "../components/Table/NoteCell";
 import { Suspense } from "react";
-import NoteCellSkeleton from "../components/Table/skeleton/NoteCellSkeleton";
 import { deleteNote } from "../lib/actions";
-import { Metadata } from 'next';
+import { Metadata } from "next";
+import NoteCellSkeleton from "../components/Table/skeleton/NoteCellSkeleton";
 
 export const metadata: Metadata = {
-  title: 'All Notes',
+  title: "All Notes",
 };
 
 const formatDatesInRows = (rows: Note[]) => {
@@ -60,16 +60,20 @@ export default async function Notes() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
-      {notesData.map((note) => (
-        <NoteCell
-          key={note.id}
-          noteId={note.id}
-          title={note.title}
-          description={note.description}
-          dateFormatted={note.last_updated}
-          noteDeletion={noteDeletion}
-        />
-      ))}
+      <>
+        <Suspense fallback={<NoteCellSkeleton number={notesData.length} />}>
+          {notesData.map((note) => (
+            <NoteCell
+              key={note.id}
+              noteId={note.id}
+              title={note.title}
+              description={note.description}
+              dateFormatted={note.last_updated}
+              noteDeletion={noteDeletion}
+            />
+          ))}
+        </Suspense>
+      </>
     </div>
   );
 }
