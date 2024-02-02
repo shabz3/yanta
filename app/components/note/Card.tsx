@@ -44,7 +44,7 @@ export default function Note({
         setUpdatedNoteId(newId);
       }
     }
-  }, 300);
+  }, 200);
   const debouncedDescription = useDebouncedCallback(async () => {
     if (title !== "") {
       const newId = await changeDescription(description, updatedNoteId);
@@ -52,7 +52,7 @@ export default function Note({
         setUpdatedNoteId(newId);
       }
     }
-  }, 300);
+  }, 200);
 
   function GoBackButton() {
     const { pending } = useFormStatus();
@@ -64,9 +64,9 @@ export default function Note({
         isDisabled={pending}
         isLoading={pending}
         startContent={<BackIcon />}
-        onClick={() => router.back()}
+        onClick={() => router.push("/notes")}
       >
-        Go Back
+        Back to notes
       </Button>
     );
   }
