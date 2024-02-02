@@ -18,12 +18,5 @@ export interface hamburgerMenuItems {
   buttonName: string;
   buttonIcon: JSX.Element;
   buttonPath: string;
-  buttonColor:
-    | "foreground"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "warning"
-    | "danger"
-    | undefined;
+  classAttributes: string;
 }

@@ -38,13 +38,13 @@ export default function NavBar() {
       buttonName: "All Notes",
       buttonIcon: <AllNotesIcon />,
       buttonPath: "/notes",
-      buttonColor: "foreground",
+      classAttributes: "w-full text-main-color",
     },
     {
       buttonName: "New Note",
       buttonIcon: <NewNoteIcon />,
       buttonPath: "/notes/new",
-      buttonColor: "foreground",
+      classAttributes: "w-full text-main-color",
     },
   ];
   const [menuItems, setMenuItems] =
@@ -57,22 +57,15 @@ export default function NavBar() {
   }, []);
 
   useEffect(() => {
-    const updatedButtons: hamburgerMenuItems[] = menuItems.map((menuItem) => {
-      if (menuItem.buttonPath === currentRoute) {
-        return { ...menuItem, buttonColor: "main-color" };
-      } else {
-        return { ...menuItem, buttonColor: "foreground" };
-      }
-    });
-    setMenuItems(updatedButtons);
+    handleSetMenuItems(currentRoute);
   }, [currentRoute]);
 
-  function handleSetMenuItems(buttonName: string) {
+  function handleSetMenuItems(path: string) {
     const updatedMenuItems: hamburgerMenuItems[] = menuItems.map((menuItem) => {
-      if (menuItem.buttonName === buttonName) {
-        return { ...menuItem, buttonColor: "main-color" };
+      if (menuItem.buttonPath === path) {
+        return { ...menuItem, classAttributes: "w-full text-main-color" };
       } else {
-        return { ...menuItem, buttonColor: "foreground" };
+        return { ...menuItem, classAttributes: "w-full dark:text-white text-gray-800" };
       }
     });
     setMenuItems(updatedMenuItems);
@@ -165,7 +158,7 @@ export default function NavBar() {
           <NavbarBrand className="mx-4">
             <Link href="/">
               <Image
-                className="content-center h-auto"
+                className="content-center w-auto h-auto"
                 src={logo}
                 width={40}
                 height={40}
@@ -216,15 +209,17 @@ export default function NavBar() {
         </NavbarContent>
         <NavbarMenu>
           {menuItems.map(
-            ({ buttonName, buttonIcon, buttonPath, buttonColor }, index) => (
+            (
+              { buttonName, buttonIcon, buttonPath, classAttributes },
+              index
+            ) => (
               <NavbarMenuItem key={`${buttonPath}-${index}`}>
                 <Link
                   href={buttonPath}
-                  className="w-full"
+                  className={classAttributes}
                   size="lg"
-                  color={buttonColor}
                   onClick={() => {
-                    handleSetMenuItems(buttonName);
+                    handleSetMenuItems(buttonPath);
                   }}
                 >
                   {buttonName} &nbsp; {buttonIcon}
