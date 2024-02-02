@@ -11,6 +11,9 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   Spinner,
+  PopoverTrigger,
+  PopoverContent,
+  Popover,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 import { UserButton, useAuth } from "@clerk/nextjs";
@@ -24,6 +27,7 @@ import logo from "@/public/logo.png";
 import Image, { StaticImageData } from "next/image";
 import { escape } from "querystring";
 import { hamburgerMenuItems } from "@/app/lib/definitions";
+import EllipsisVerticalIcon20x20 from "../icons/EllipsisVerticalIcon20x20";
 
 export default function NavBar() {
   const currentRoute = usePathname();
@@ -55,7 +59,7 @@ export default function NavBar() {
   useEffect(() => {
     const updatedButtons: hamburgerMenuItems[] = menuItems.map((menuItem) => {
       if (menuItem.buttonPath === currentRoute) {
-        return { ...menuItem, buttonColor: "primary" };
+        return { ...menuItem, buttonColor: "main-color" };
       } else {
         return { ...menuItem, buttonColor: "foreground" };
       }
@@ -66,7 +70,7 @@ export default function NavBar() {
   function handleSetMenuItems(buttonName: string) {
     const updatedMenuItems: hamburgerMenuItems[] = menuItems.map((menuItem) => {
       if (menuItem.buttonName === buttonName) {
-        return { ...menuItem, buttonColor: "primary" };
+        return { ...menuItem, buttonColor: "main-color" };
       } else {
         return { ...menuItem, buttonColor: "foreground" };
       }
@@ -77,7 +81,11 @@ export default function NavBar() {
 
   function DisplayLoginButton() {
     if (isSignedIn) {
-      return <UserButton afterSignOutUrl="/" />;
+      return (
+        <Button isIconOnly variant="ghost">
+          <UserButton afterSignOutUrl="/" />
+        </Button>
+      );
     } else if (typeof isSignedIn === "undefined") {
       return <Spinner color="default" />;
     }
@@ -104,6 +112,26 @@ export default function NavBar() {
         </Button>
       );
     }
+  }
+
+  function EllipsisContent() {
+    return (
+      <>
+        <Popover backdrop="opaque">
+          <PopoverTrigger>
+            <Link className="align-middle ml-1" color="foreground">
+              <EllipsisVerticalIcon20x20 />
+            </Link>
+          </PopoverTrigger>
+          <PopoverContent className="dark:bg-zinc-800">
+            <div className="content-center px-1 my-2 flex flex-col gap-2">
+              <DisplayLoginButton />
+              <ToggleThemeButton />
+            </div>
+          </PopoverContent>
+        </Popover>
+      </>
+    );
   }
   return (
     <>
@@ -137,7 +165,7 @@ export default function NavBar() {
           <NavbarBrand className="mx-4">
             <Link href="/">
               <Image
-                className="content-center h-auto w-auto"
+                className="content-center h-auto"
                 src={logo}
                 width={40}
                 height={40}
@@ -175,13 +203,16 @@ export default function NavBar() {
             </Link>
           </NavbarItem>
         </NavbarContent>
-        <NavbarContent justify="end">
-          <NavbarItem className="ml-4">
-            <DisplayLoginButton />
-          </NavbarItem>
-          <NavbarItem>
-            <ToggleThemeButton />
-          </NavbarItem>
+        <NavbarContent className="hidden sm:flex gap-4" justify="end">
+          <DisplayLoginButton />
+          <ToggleThemeButton />
+        </NavbarContent>
+        <NavbarContent
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden"
+          justify="end"
+        >
+          <EllipsisContent />
         </NavbarContent>
         <NavbarMenu>
           {menuItems.map(

@@ -1,6 +1,6 @@
 import React from "react";
 
-const EllipsisVerticalIcon = () => {
+const EllipsisVerticalIcon16x16 = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,4 +13,4 @@ const EllipsisVerticalIcon = () => {
   );
 };
 
-export default EllipsisVerticalIcon;
+export default EllipsisVerticalIcon16x16;

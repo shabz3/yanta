@@ -63,7 +63,6 @@ export async function createNote(
       user_id: userId,
     })
     .select();
-  console.log("data is createNote() is: ", data);
   return { data, error };
 }
 export async function deleteNote(noteId: number) {

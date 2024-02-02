@@ -10,7 +10,7 @@ import {
   Link,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import EllipsisVerticalIcon from "../icons/EllipsisVerticalIcon";
+import EllipsisVerticalIcon16x16 from "../icons/EllipsisVerticalIcon16x16";
 import { TrashIcon } from "../icons/TrashIcon";
 import PencilIcon from "../icons/PencilIcon";
 
@@ -50,10 +50,10 @@ export default function NoteCell({
       <div className="items-stretch">
         <p className="pt-4 pb-2 text-center text-sm text-main-color font-semibold">
           Edited {dateFormatted}{" "}
-          <Popover showArrow={true}>
+          <Popover>
             <PopoverTrigger>
               <Link className="align-middle ml-1" color="foreground">
-                <EllipsisVerticalIcon />
+                <EllipsisVerticalIcon16x16 />
               </Link>
             </PopoverTrigger>
             <PopoverContent className=" dark:bg-neutral-700">

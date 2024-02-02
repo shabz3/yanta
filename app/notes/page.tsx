@@ -14,40 +14,33 @@ export const metadata: Metadata = {
   title: "All Notes",
 };
 
-const formatDatesInRows = (rows: Note[]) => {
-  return rows.map((row) => {
+const formatDateInRows = (rows: Note[]) => {
+  // sorts rows to be most recently updated first
+  rows.sort((a: Note, b: Note) => {
+    const dateA = new Date(a["last_updated"]).getTime();
+    const dateB = new Date(b["last_updated"]).getTime();
+
+    return dateB - dateA;
+  });
+  // converts utc date to human readable
+  let formattedDates = rows.map((row) => {
     const formattedDate = moment(row["last_updated"]).fromNow();
     return {
       ...row,
       last_updated: formattedDate,
     };
   });
+  return formattedDates;
 };
 
 async function noteDeletion(noteId: number) {
   "use server";
-  // const { error } = await deleteNote(noteId);
-  // if (error) {
-  //   throw new Error(`Error deleting note: ${error}`);
-  // }
-  // revalidatePath("/notes");
-  const supabaseAccessToken = await getSupabaseAccessToken();
-  const supabase = await supabaseClient(supabaseAccessToken);
-  const { error } = await supabase.from("Notes").delete().eq("id", noteId);
+  const { error } = await deleteNote(noteId);
   if (error) {
     throw new Error(`Error deleting note: ${error}`);
   }
   revalidatePath("/notes");
 }
-
-const sortNotesInLatestCreated = (data: Note[]) => {
-  data.sort((a: Note, b: Note) => {
-    const dateA = new Date(a["last_updated"]).getTime();
-    const dateB = new Date(b["last_updated"]).getTime();
-
-    return dateB - dateA;
-  });
-};
 
 export default async function Notes() {
   noStore();
@@ -55,8 +48,7 @@ export default async function Notes() {
   if (data === null) {
     data = [];
   }
-  sortNotesInLatestCreated(data);
-  const notesData = formatDatesInRows(data);
+  const notesData = formatDateInRows(data);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
