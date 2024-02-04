@@ -84,7 +84,7 @@ export default function NavBar() {
     }
     return (
       <Button as={Link} href="/notes" variant="bordered">
-        Login/Sign Up
+        Login
       </Button>
     );
   }
@@ -160,8 +160,8 @@ export default function NavBar() {
               <Image
                 className="content-center w-auto h-auto"
                 src={logo}
-                width={40}
-                height={40}
+                width={35}
+                height={35}
                 alt="Yanta logo"
               />
               <h1 className="text-4xl font-semibold mx-2 dark:text-white text-black">

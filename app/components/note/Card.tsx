@@ -9,7 +9,6 @@ import { useFormStatus } from "react-dom";
 import BackIcon from "../icons/BackIcon";
 import { useDebouncedCallback } from "use-debounce";
 
-// (newValue: string) => void means that that setTitle is a function that takes a string as an argument (called `newValue`) and returns `void`
 
 export default function Note({
   noteId,
@@ -72,7 +71,7 @@ export default function Note({
   }
 
   return (
-    <Card className="mt-20 mx-14 p-4" radius="lg">
+    <Card className="my-20 mx-14 p-4" radius="lg">
       <div className="space-y-20">
         <div className="h-14">
           <CardHeader>
