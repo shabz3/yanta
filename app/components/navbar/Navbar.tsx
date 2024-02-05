@@ -54,7 +54,7 @@ export default function NavBar() {
   useEffect(() => {
     setMounted(true);
     resolvedTheme === "light" ? setTheme("light") : setTheme("dark");
-  }, []);
+  }, [resolvedTheme, setTheme]);
 
   useEffect(() => {
     handleSetMenuItems(currentRoute);
@@ -65,7 +65,10 @@ export default function NavBar() {
       if (menuItem.buttonPath === path) {
         return { ...menuItem, classAttributes: "w-full text-main-color" };
       } else {
-        return { ...menuItem, classAttributes: "w-full dark:text-white text-gray-800" };
+        return {
+          ...menuItem,
+          classAttributes: "w-full dark:text-white text-gray-800",
+        };
       }
     });
     setMenuItems(updatedMenuItems);

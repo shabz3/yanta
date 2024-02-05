@@ -1,9 +1,9 @@
 import Note from "../../components/note/Card";
-import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs";
 import { createNote, editNote } from "@/app/lib/actions";
 import { revalidatePath } from "next/cache";
 import { Metadata } from "next";
+import { Suspense } from "react";
+import CardSkeleton from "@/app/components/note/skeleton/CardSkeleton";
 
 export const metadata: Metadata = {
   title: "New Note",
@@ -73,7 +73,6 @@ export default function Page() {
     }
   }
   return (
-    <>
       <Note
         noteId={0}
         notesTitle=""
@@ -81,6 +80,6 @@ export default function Page() {
         changeTitle={changeTitle}
         changeDescription={changeDescription}
       />
-    </>
+
   );
 }

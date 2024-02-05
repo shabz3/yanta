@@ -52,20 +52,18 @@ export default async function Notes() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
-      <>
-        <Suspense fallback={<NoteCellSkeleton number={notesData.length} />}>
-          {notesData.map((note) => (
-            <NoteCell
-              key={note.id}
-              noteId={note.id}
-              title={note.title}
-              description={note.description}
-              dateFormatted={note.last_updated}
-              noteDeletion={noteDeletion}
-            />
-          ))}
-        </Suspense>
-      </>
+      <Suspense fallback={<NoteCellSkeleton number={notesData.length} />}>
+        {notesData.map((note) => (
+          <NoteCell
+            key={note.id}
+            noteId={note.id}
+            title={note.title}
+            description={note.description}
+            dateFormatted={note.last_updated}
+            noteDeletion={noteDeletion}
+          />
+        ))}
+      </Suspense>
     </div>
   );
 }

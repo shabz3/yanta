@@ -1,11 +1,11 @@
 import NoteCard from "../../components/note/Card";
 import { Note } from "../../lib/definitions";
-import { auth } from "@clerk/nextjs";
 import getNotes from "../../lib/data";
 import { editNote } from "@/app/lib/actions";
 import { revalidatePath, revalidateTag } from "next/cache";
 import CardSkeleton from "@/app/components/note/skeleton/CardSkeleton";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Edit Note",
@@ -50,7 +50,6 @@ export default async function SingleNote({
   }
 
   return (
-    <>
       <NoteCard
         noteId={noteId}
         notesTitle={title}
@@ -58,6 +57,5 @@ export default async function SingleNote({
         changeTitle={changeTitle}
         changeDescription={changeDescription}
       />
-    </>
   );
 }

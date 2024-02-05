@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+
 import { Card, Skeleton, CardHeader, CardBody } from "@nextui-org/react";
 
 function NoteCellSkeleton({ number }: { number: number }) {
