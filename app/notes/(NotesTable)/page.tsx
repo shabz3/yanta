@@ -1,14 +1,15 @@
-import { Note } from "../lib/definitions";
+import { Note } from "../../lib/definitions";
 import moment from "moment";
-import getNotes from "../lib/data";
-import getSupabaseAccessToken from "../lib/getSupabaseAccessToken";
-import supabaseClient from "../lib/supabaseClient";
+import getNotes from "../../lib/data";
+import getSupabaseAccessToken from "../../lib/getSupabaseAccessToken";
+import supabaseClient from "../../lib/supabaseClient";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
-import NoteCell from "../components/Table/NoteCell";
+import NoteCell from "../../components/Table/NoteCell";
 import { Suspense } from "react";
-import { deleteNote } from "../lib/actions";
+import { deleteNote } from "../../lib/actions";
 import { Metadata } from "next";
-import NoteCellSkeleton from "../components/Table/skeleton/NoteCellSkeleton";
+import NoteCellSkeleton from "../../components/Table/skeleton/NoteCellSkeleton";
+import NotesTable from "./NotesTable";
 
 export const metadata: Metadata = {
   title: "All Notes",
@@ -51,19 +52,7 @@ export default async function Notes() {
   const notesData = formatDateInRows(data);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
-      <Suspense fallback={<NoteCellSkeleton number={notesData.length} />}>
-        {notesData.map((note) => (
-          <NoteCell
-            key={note.id}
-            noteId={note.id}
-            title={note.title}
-            description={note.description}
-            dateFormatted={note.last_updated}
-            noteDeletion={noteDeletion}
-          />
-        ))}
-      </Suspense>
-    </div>
+    <NotesTable notesData={notesData} noteDeletion={noteDeletion}/>
+
   );
 }

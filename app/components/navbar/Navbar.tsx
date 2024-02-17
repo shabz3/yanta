@@ -28,6 +28,7 @@ import Image, { StaticImageData } from "next/image";
 import { escape } from "querystring";
 import { hamburgerMenuItems } from "@/app/lib/definitions";
 import EllipsisVerticalIcon20x20 from "../icons/EllipsisVerticalIcon20x20";
+import LoginIcon from "../icons/LoginIcon";
 
 export default function NavBar() {
   const currentRoute = usePathname();
@@ -86,7 +87,7 @@ export default function NavBar() {
       return <Spinner color="default" />;
     }
     return (
-      <Button as={Link} href="/notes" variant="bordered">
+      <Button as={Link} href="/notes" variant="bordered" endContent={<LoginIcon />}>
         Login
       </Button>
     );
@@ -113,7 +114,7 @@ export default function NavBar() {
   function EllipsisContent() {
     return (
       <>
-        <Popover backdrop="opaque">
+        <Popover>
           <PopoverTrigger>
             <Link className="align-middle ml-1" color="foreground">
               <EllipsisVerticalIcon20x20 />
