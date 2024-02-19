@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input, Textarea } from "@nextui-org/react";
+import { Button, Input, Spinner, Textarea } from "@nextui-org/react";
 import { Spacer } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import BackIcon from "../icons/BackIcon";
 import { useDebouncedCallback } from "use-debounce";
-
+import Link from "next/link";
 
 export default function Note({
   noteId,
@@ -28,6 +28,10 @@ export default function Note({
   const [description, setDescription] = useState(notesDescription);
   const [noTitleText, setNoTitleText] = useState("");
   const [updatedNoteId, setUpdatedNoteId] = useState(noteId);
+  const [isSaving, setIsSaving] = useState(false);
+  // TODO: figure out pending and replace isSaving with pending
+  const { pending } = useFormStatus();
+  console.log(`Saving state: ${pending}`);
   useEffect(() => {
     if (title === "") {
       setNoTitleText("Your note must have a title");
@@ -43,7 +47,8 @@ export default function Note({
         setUpdatedNoteId(newId);
       }
     }
-  }, 200);
+    setIsSaving(false);
+  }, 3000);
   const debouncedDescription = useDebouncedCallback(async () => {
     if (title !== "") {
       const newId = await changeDescription(description, updatedNoteId);
@@ -51,22 +56,35 @@ export default function Note({
         setUpdatedNoteId(newId);
       }
     }
-  }, 200);
+    setIsSaving(false);
+  }, 3000);
 
   function GoBackButton() {
-    const { pending } = useFormStatus();
     return (
       <Button
         className="dark:bg-gray-800 bg-main-color w-full"
         radius="lg"
         variant="flat"
-        isDisabled={pending}
-        isLoading={pending}
+        isDisabled={isSaving}
+        // isLoading={isSaving}
         startContent={<BackIcon />}
         onClick={() => router.push("/notes")}
       >
         Back to notes
       </Button>
+    );
+  }
+
+  function SavingText() {
+    return (
+      <>
+        {isSaving ? (
+          <span className="italic text-gray-600 mt-2 mr-1">
+            Saving... &nbsp;
+            <Spinner color="default" size="sm" />
+          </span>
+        ) : null}
+      </>
     );
   }
 
@@ -80,6 +98,7 @@ export default function Note({
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
+                setIsSaving(true);
                 debouncedTitle();
               }}
               className="block w-full"
@@ -98,11 +117,13 @@ export default function Note({
               value={description}
               onChange={(e) => {
                 setDescription(e.target.value);
+                setIsSaving(true);
                 debouncedDescription();
               }}
               className="block w-full"
               name="description"
             />
+            <div className="flex justify-end">{<SavingText />}</div>
           </CardBody>
         </div>
       </div>
