@@ -45,7 +45,7 @@ function NotesTable({
         <NoNotes />
       ) : (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
+          <div className="h-100 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
             <Suspense
               fallback={<NoteCellSkeleton number={notesToRender.length} />}
             >
@@ -61,19 +61,21 @@ function NotesTable({
               ))}
             </Suspense>
           </div>
-          <div className="flex flex-row justify-center items-center">
-            <Pagination
-              classNames={{
-                cursor: "bg-main-color",
-              }}
-              isCompact
-              showControls
-              showShadow
-              page={page}
-              total={totalNumberofPages}
-              onChange={(page) => setPage(page)}
-            />
-          </div>
+          {notesData.length > 9 && (
+            <div className="flex flex-row justify-center items-center">
+              <Pagination
+                classNames={{
+                  cursor: "bg-main-color",
+                }}
+                isCompact
+                showControls
+                showShadow
+                page={page}
+                total={totalNumberofPages}
+                onChange={(page) => setPage(page)}
+              />
+            </div>
+          )}
         </>
       )}
     </>
