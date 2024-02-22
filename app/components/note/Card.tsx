@@ -31,7 +31,7 @@ export default function Note({
   const [isSaving, setIsSaving] = useState(false);
   // TODO: figure out pending and replace isSaving with pending
   const { pending } = useFormStatus();
-  console.log(`Saving state: ${pending}`);
+  console.log(pending)
   useEffect(() => {
     if (title === "") {
       setNoTitleText("Your note must have a title");
@@ -66,8 +66,9 @@ export default function Note({
         radius="lg"
         variant="flat"
         isDisabled={isSaving}
-        // isLoading={isSaving}
-        startContent={<BackIcon />}
+        startContent={
+          isSaving ? <Spinner color="white" size="sm" /> : <BackIcon />
+        }
         onClick={() => router.push("/notes")}
       >
         Back to notes
