@@ -7,12 +7,12 @@ import {
   Image,
 } from "@nextui-org/react";
 import NextImage from "next/image";
-import PencilSquareIcon from "./components/icons/PencilSquareIcon";
-import AllNotesIcon from "./components/icons/AllNotesIcon20x20";
-import TrashIcon from "./components/icons/TrashIcon20x20";
+import PencilSquareIcon from "../components/icons/PencilSquareIcon";
+import AllNotesIcon from "../components/icons/AllNotesIcon20x20";
+import TrashIcon from "../components/icons/TrashIcon20x20";
 import Link from "next/link";
 
-export default async function App() {
+export default function MainContent({ newNoteUuid }: { newNoteUuid: string }) {
   return (
     <>
       <div className="grid gap-y-14 mt-20 mx-10">
@@ -21,8 +21,7 @@ export default async function App() {
             One place for all your impromptu notes.
           </h1>
           <h3 className="text-center text-xl md:text-3xl lg:text-4xl font-medium tracking-normal leading-snug">
-            Use yanta to quickly jot any note down, and access it from
-            anywhere.
+            Use yanta to quickly jot any note down, and access it from anywhere.
           </h3>
         </div>
         <div className="grid gap-4 grid-cols-1 lg:grid-cols-3 md:grid-cols-2 mx-10">
@@ -39,7 +38,7 @@ export default async function App() {
             <CardFooter className="flex justify-center">
               <Button
                 as={Link}
-                href="/notes/new"
+                href={`/notes/${newNoteUuid}`}
                 className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-400 rounded-lg focus:ring-2 focus:outline-none hover:bg-blue-500"
               >
                 Write note

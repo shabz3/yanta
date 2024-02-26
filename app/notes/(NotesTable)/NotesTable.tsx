@@ -8,27 +8,14 @@ import { Button, Pagination } from "@nextui-org/react";
 import PlusIcon from "@/app/components/icons/PlusIcon";
 import Link from "next/link";
 
-function NoNotes() {
-  return (
-    <div className="flex h-screen">
-      <Button
-        as={Link}
-        href="/notes/new"
-        className="m-auto dark:bg-gray-800 bg-main-color w-60"
-        startContent={<PlusIcon />}
-      >
-        Create your first note
-      </Button>
-    </div>
-  );
-}
-
 function NotesTable({
   notesData,
   noteDeletion,
+  newNoteUuid,
 }: {
   notesData: Note[];
-  noteDeletion: (noteId: number) => void;
+  noteDeletion: (noteId: string) => void;
+  newNoteUuid: string;
 }) {
   const [page, setPage] = useState(1);
   const rowsPerPage = 9;
@@ -39,10 +26,25 @@ function NotesTable({
 
     return notesData.slice(start, end);
   }, [page, notesData]);
+
+  function NewNoteButton() {
+    return (
+      <div className="flex h-screen">
+        <Button
+          as={Link}
+          href={`/notes/${newNoteUuid}`}
+          className="m-auto dark:bg-gray-800 bg-main-color w-60"
+          startContent={<PlusIcon />}
+        >
+          Create your first note
+        </Button>
+      </div>
+    );
+  }
   return (
     <>
       {notesData.length === 0 ? (
-        <NoNotes />
+        <NewNoteButton />
       ) : (
         <>
           <div className="h-100 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">

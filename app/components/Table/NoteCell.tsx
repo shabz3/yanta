@@ -22,11 +22,11 @@ export default function NoteCell({
   dateFormatted,
   noteDeletion,
 }: {
-  noteId: number;
+  noteId: string;
   title: string;
   description: string;
   dateFormatted: string;
-  noteDeletion: (noteId: number) => void;
+  noteDeletion: (noteId: string) => void;
 }) {
   const router = useRouter();
   return (

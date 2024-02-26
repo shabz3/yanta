@@ -3,6 +3,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import NavBar from "./components/navbar/Navbar";
+import { v4 as uuidv4 } from "uuid";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -24,11 +25,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const newId = uuidv4();
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={poppins.className}>
         <Providers>
-          <NavBar />
+          <NavBar newNoteUuid={newId} />
           {children}
         </Providers>
       </body>

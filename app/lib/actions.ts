@@ -2,11 +2,10 @@ import getSupabaseAccessToken from "./getSupabaseAccessToken";
 import supabaseClient from "./supabaseClient";
 import { Note } from "./definitions";
 import { auth } from "@clerk/nextjs";
-import { newNote } from "./definitions";
 import { revalidatePath } from "next/cache";
 
-export async function editNote(
-  noteId: number,
+export async function upsertNote(
+  noteId: string,
   title: string,
   description: string,
   dateNow: string
@@ -14,41 +13,21 @@ export async function editNote(
   const { userId } = auth();
   const supabaseAccessToken = await getSupabaseAccessToken();
   const supabase = await supabaseClient(supabaseAccessToken);
-  function formToUpdate() {
-    if (description !== "" && title !== "") {
-      return {
-        title,
-        description,
-        last_updated: dateNow,
-        user_id: userId,
-      };
-    } else if (description === "") {
-      return {
-        title,
-        last_updated: dateNow,
-        user_id: userId,
-      };
-    } else if (title === "") {
-      return {
-        description,
-        last_updated: dateNow,
-        user_id: userId,
-      };
-    }
-  }
 
-  const { data, error } = await supabase
-    .from("Notes")
-    .update(formToUpdate())
-    .eq("id", noteId)
-    .select();
-  console.log("data is editNote() is: ", data);
+  const form = {
+    id: noteId,
+    title,
+    description,
+    last_updated: dateNow,
+    user_id: userId,
+  };
+  const { data, error } = await supabase.from("Notes").upsert(form).select();
+
   return { data, error };
 }
 
 export async function createNote(
-  title: string | null,
-  description: string | null,
+  noteId: string,
   dateNow: string
 ) {
   const { userId } = auth();
@@ -57,15 +36,14 @@ export async function createNote(
   const { data, error } = await supabase
     .from("Notes")
     .insert({
-      title,
-      description,
+      id: noteId,
       last_updated: dateNow,
       user_id: userId,
     })
     .select();
   return { data, error };
 }
-export async function deleteNote(noteId: number) {
+export async function deleteNote(noteId: string) {
   const supabaseAccessToken = await getSupabaseAccessToken();
   const supabase = await supabaseClient(supabaseAccessToken);
   const { error } = await supabase.from("Notes").delete().eq("id", noteId);

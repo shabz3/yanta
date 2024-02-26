@@ -17,21 +17,25 @@ export default function Note({
   changeTitle,
   changeDescription,
 }: {
-  noteId: number;
-  notesTitle: string;
-  notesDescription: string;
-  changeTitle: (title: string, noteId: number) => Promise<number>;
-  changeDescription: (description: string, noteId: number) => Promise<number>;
+  noteId: string;
+  notesTitle: string | null;
+  notesDescription: string | null;
+  changeTitle: (title: string, noteId: string) => Promise<string>;
+  changeDescription: (
+    title: string,
+    description: string,
+    noteId: string
+  ) => Promise<string>;
 }) {
   const router = useRouter();
-  const [title, setTitle] = useState(notesTitle);
-  const [description, setDescription] = useState(notesDescription);
+  const [title, setTitle] = useState(notesTitle ? notesTitle : "");
+  const [description, setDescription] = useState(
+    notesDescription ? notesDescription : ""
+  );
   const [noTitleText, setNoTitleText] = useState("");
-  const [updatedNoteId, setUpdatedNoteId] = useState(noteId);
   const [isSaving, setIsSaving] = useState(false);
   // TODO: figure out pending and replace isSaving with pending
   const { pending } = useFormStatus();
-  console.log(pending)
   useEffect(() => {
     if (title === "") {
       setNoTitleText("Your note must have a title");
@@ -42,19 +46,14 @@ export default function Note({
 
   const debouncedTitle = useDebouncedCallback(async () => {
     if (title !== "") {
-      const newId = await changeTitle(title, updatedNoteId);
-      if (updatedNoteId === 0) {
-        setUpdatedNoteId(newId);
-      }
+      console.log("title is: ", title);
+      await changeTitle(title, noteId);
     }
     setIsSaving(false);
   }, 3000);
   const debouncedDescription = useDebouncedCallback(async () => {
     if (title !== "") {
-      const newId = await changeDescription(description, updatedNoteId);
-      if (updatedNoteId === 0) {
-        setUpdatedNoteId(newId);
-      }
+      await changeDescription(title, description, noteId);
     }
     setIsSaving(false);
   }, 3000);
@@ -71,21 +70,8 @@ export default function Note({
         }
         onClick={() => router.push("/notes")}
       >
-        Back to notes
+        {isSaving ? "Saving..." : "Back to notes"}
       </Button>
-    );
-  }
-
-  function SavingText() {
-    return (
-      <>
-        {isSaving ? (
-          <span className="italic text-gray-600 mt-2 mr-1">
-            Saving... &nbsp;
-            <Spinner color="default" size="sm" />
-          </span>
-        ) : null}
-      </>
     );
   }
 
@@ -124,7 +110,6 @@ export default function Note({
               className="block w-full"
               name="description"
             />
-            <div className="flex justify-end">{<SavingText />}</div>
           </CardBody>
         </div>
       </div>

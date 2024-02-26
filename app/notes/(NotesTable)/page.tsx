@@ -10,6 +10,7 @@ import { deleteNote } from "../../lib/actions";
 import { Metadata } from "next";
 import NoteCellSkeleton from "../../components/Table/skeleton/NoteCellSkeleton";
 import NotesTable from "./NotesTable";
+import { v4 as uuidv4 } from "uuid";
 
 export const metadata: Metadata = {
   title: "All Notes",
@@ -34,7 +35,7 @@ const formatDateInRows = (rows: Note[]) => {
   return formattedDates;
 };
 
-async function noteDeletion(noteId: number) {
+async function noteDeletion(noteId: string) {
   "use server";
   const { error } = await deleteNote(noteId);
   if (error) {
@@ -44,6 +45,7 @@ async function noteDeletion(noteId: number) {
 }
 
 export default async function Notes() {
+  const newId = uuidv4();
   noStore();
   let { data } = await getNotes();
   if (data === null) {
@@ -51,8 +53,5 @@ export default async function Notes() {
   }
   const notesData = formatDateInRows(data);
 
-  return (
-    <NotesTable notesData={notesData} noteDeletion={noteDeletion}/>
-
-  );
+  return <NotesTable notesData={notesData} noteDeletion={noteDeletion} newNoteUuid={newId} />;
 }

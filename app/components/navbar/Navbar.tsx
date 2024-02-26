@@ -30,7 +30,7 @@ import { hamburgerMenuItems } from "@/app/lib/definitions";
 import EllipsisVerticalIcon20x20 from "../icons/EllipsisVerticalIcon20x20";
 import LoginIcon from "../icons/LoginIcon";
 
-export default function NavBar() {
+export default function NavBar({ newNoteUuid }: { newNoteUuid: string }) {
   const currentRoute = usePathname();
   const { isSignedIn } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,7 +44,7 @@ export default function NavBar() {
     {
       buttonName: "New Note",
       buttonIcon: <NewNoteIcon />,
-      buttonPath: "/notes/new",
+      buttonPath: `/notes/${newNoteUuid}`,
       classAttributes: "w-full text-main-color",
     },
   ];
@@ -87,7 +87,12 @@ export default function NavBar() {
       return <Spinner color="default" />;
     }
     return (
-      <Button as={Link} href="/notes" variant="bordered" endContent={<LoginIcon />}>
+      <Button
+        as={Link}
+        href="/notes"
+        variant="bordered"
+        endContent={<LoginIcon />}
+      >
         Login
       </Button>
     );
@@ -187,11 +192,13 @@ export default function NavBar() {
               All Notes &nbsp; {<AllNotesIcon />}
             </Link>
           </NavbarItem>
-          <NavbarItem isActive={currentRoute === "/notes/new" ? true : false}>
+          <NavbarItem
+            isActive={currentRoute === `/notes/${newNoteUuid}` ? true : false}
+          >
             <Link
-              href="/notes/new"
+              href={`/notes/${newNoteUuid}`}
               className={
-                currentRoute === "/notes/new"
+                currentRoute === `/notes/${newNoteUuid}`
                   ? "text-main-color"
                   : "dark:text-white text-gray-800"
               }
