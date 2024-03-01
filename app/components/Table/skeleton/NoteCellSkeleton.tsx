@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import { Card, Skeleton, CardHeader, CardBody } from "@nextui-org/react";
 
-function NoteCellSkeleton({ number }: { number: number }) {
+function NoteCellSkeleton({ number }: { number: number | undefined }) {
   return Array(number)
     .fill(0)
     .map((e, index) => (
@@ -15,6 +15,10 @@ function NoteCellSkeleton({ number }: { number: number }) {
             <div className="" />
           </Skeleton>
         </Card>
+        <div className="flex justify-center mt-5">
+        <Skeleton className="rounded-lg h-5 w-2/5">
+          <div className="h-5 w-2/5 rounded-lg bg-default-200"></div>
+        </Skeleton></div>
       </div>
     ));
 }

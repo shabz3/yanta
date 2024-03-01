@@ -17,6 +17,7 @@ import {
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 import { UserButton, useAuth } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import MoonIcon from "../icons/MoonIcon";
@@ -76,11 +77,16 @@ export default function NavBar({ newNoteUuid }: { newNoteUuid: string }) {
     setIsMenuOpen(false);
   }
 
-  function DisplayLoginButton() {
+  function DisplayLoginButton({ isIcon: isIcon }: { isIcon: boolean }) {
     if (isSignedIn) {
       return (
-        <Button isIconOnly variant="ghost">
-          <UserButton afterSignOutUrl="/" />
+        <Button isIconOnly={isIcon} variant="ghost">
+          <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              baseTheme: resolvedTheme === "dark" ? dark : undefined,
+            }}
+          />
         </Button>
       );
     } else if (typeof isSignedIn === "undefined") {
@@ -98,13 +104,13 @@ export default function NavBar({ newNoteUuid }: { newNoteUuid: string }) {
     );
   }
 
-  function ToggleThemeButton() {
+  function ToggleThemeButton({ isIcon: isIcon }: { isIcon: boolean }) {
     if (!mounted) {
       return <Spinner color="default" />;
     } else {
       return (
         <Button
-          isIconOnly
+          isIconOnly={isIcon}
           variant="ghost"
           onClick={() =>
             resolvedTheme === "dark" ? setTheme("light") : setTheme("dark")
@@ -118,21 +124,19 @@ export default function NavBar({ newNoteUuid }: { newNoteUuid: string }) {
 
   function EllipsisContent() {
     return (
-      <>
-        <Popover>
-          <PopoverTrigger>
-            <Link className="align-middle ml-1" color="foreground">
-              <EllipsisVerticalIcon20x20 />
-            </Link>
-          </PopoverTrigger>
-          <PopoverContent className="dark:bg-zinc-800">
-            <div className="content-center px-1 my-2 flex flex-col gap-2">
-              <DisplayLoginButton />
-              <ToggleThemeButton />
-            </div>
-          </PopoverContent>
-        </Popover>
-      </>
+      <Popover>
+        <PopoverTrigger>
+          <Link color="foreground">
+            <EllipsisVerticalIcon20x20 />
+          </Link>
+        </PopoverTrigger>
+        <PopoverContent className="dark:bg-zinc-800">
+          <div className="flex px-1 my-2 flex-col gap-2">
+            <DisplayLoginButton isIcon={false} />
+            <ToggleThemeButton isIcon={false} />
+          </div>
+        </PopoverContent>
+      </Popover>
     );
   }
   return (
@@ -164,13 +168,13 @@ export default function NavBar({ newNoteUuid }: { newNoteUuid: string }) {
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             className="sm:hidden"
           />
-          <NavbarBrand className="mx-4">
+          <NavbarBrand className="flex justify-center">
             <Link href="/">
               <Image
-                className="content-center w-auto h-auto"
+                className="w-auto h-auto"
                 src={logo}
-                width={35}
-                height={35}
+                width={33}
+                height={33}
                 alt="Yanta logo"
               />
               <h1 className="text-4xl font-semibold mx-2 dark:text-white text-black">
@@ -208,16 +212,15 @@ export default function NavBar({ newNoteUuid }: { newNoteUuid: string }) {
           </NavbarItem>
         </NavbarContent>
         <NavbarContent className="hidden sm:flex gap-4" justify="end">
-          <DisplayLoginButton />
-          <ToggleThemeButton />
+          <DisplayLoginButton isIcon={true} />
+          <ToggleThemeButton isIcon={true} />
         </NavbarContent>
-        <NavbarContent
+        <div
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
-          justify="end"
         >
           <EllipsisContent />
-        </NavbarContent>
+        </div>
         <NavbarMenu>
           {menuItems.map(
             (

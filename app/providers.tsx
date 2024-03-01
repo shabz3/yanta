@@ -11,9 +11,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <NextUIProvider navigate={router.push}>
       <NextThemesProvider attribute="class" defaultTheme="dark">
         <ClerkProvider
-          appearance={{
-            baseTheme: dark,
-          }}
+          
         >
           {children}
         </ClerkProvider>

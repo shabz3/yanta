@@ -16,7 +16,8 @@ export const metadata: Metadata = {
   title: "All Notes",
 };
 
-const formatDateInRows = (rows: Note[]) => {
+const formatDateInRows = (rows: Note[] | null) => {
+  if (rows === null) return [];
   // sorts rows to be most recently updated first
   rows.sort((a: Note, b: Note) => {
     const dateA = new Date(a["last_updated"]).getTime();
@@ -48,10 +49,14 @@ export default async function Notes() {
   const newId = uuidv4();
   noStore();
   let { data } = await getNotes();
-  if (data === null) {
-    data = [];
-  }
+
   const notesData = formatDateInRows(data);
 
-  return <NotesTable notesData={notesData} noteDeletion={noteDeletion} newNoteUuid={newId} />;
+  return (
+    <NotesTable
+      notesData={notesData}
+      noteDeletion={noteDeletion}
+      newNoteUuid={newId}
+    />
+  );
 }

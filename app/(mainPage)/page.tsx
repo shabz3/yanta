@@ -3,9 +3,5 @@ import MainContent from "./mainContent";
 
 export default async function App() {
   const newId = uuidv4();
-  return (
-    <>
-      <MainContent newNoteUuid={newId} />
-    </>
-  );
+  return <MainContent newNoteUuid={newId} />;
 }

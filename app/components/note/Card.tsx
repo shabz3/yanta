@@ -35,6 +35,7 @@ export default function Note({
   const [noTitleText, setNoTitleText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   // TODO: figure out pending and replace isSaving with pending
+  console.log(`the state of isSaving is: ${isSaving}`)
   const { pending } = useFormStatus();
   useEffect(() => {
     if (title === "") {

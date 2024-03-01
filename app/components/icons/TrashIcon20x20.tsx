@@ -5,8 +5,8 @@ function TrashIcon20x20() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
-      fill="#4d7c0f"
-      className="w-10 h-10 border-2 border-spacing-1 rounded-lg border-lime-700 p-1"
+      fill="#991b1b"
+      className="w-10 h-10 border-2 border-spacing-1 rounded-lg border-red-800 p-1"
     >
       <path
         fillRule="evenodd"

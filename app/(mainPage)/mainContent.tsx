@@ -78,7 +78,7 @@ export default function MainContent({ newNoteUuid }: { newNoteUuid: string }) {
                 <Button
                   as={Link}
                   href="/notes"
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-lime-700 rounded-lg focus:ring-2 focus:ring-lime-900 focus:outline-none hover:bg-lime-800"
+                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-800 rounded-lg focus:ring-2 focus:ring-lime-900 focus:outline-none hover:bg-lime-800"
                 >
                   Edit notes
                 </Button>

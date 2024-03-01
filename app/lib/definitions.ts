@@ -1,8 +1,8 @@
 export interface Note {
-  id: string;
-  title: string;
-  description: string;
-  last_updated: string;
+  id: any;
+  title: any;
+  description: any;
+  last_updated: any;
 }
 
 export interface hamburgerMenuItems {

@@ -48,20 +48,16 @@ function NotesTable({
       ) : (
         <>
           <div className="h-100 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 ">
-            <Suspense
-              fallback={<NoteCellSkeleton number={notesToRender.length} />}
-            >
-              {notesToRender.map((note) => (
-                <NoteCell
-                  key={note.id}
-                  noteId={note.id}
-                  title={note.title}
-                  description={note.description}
-                  dateFormatted={note.last_updated}
-                  noteDeletion={noteDeletion}
-                />
-              ))}
-            </Suspense>
+            {notesToRender.map((note) => (
+              <NoteCell
+                key={note.id}
+                noteId={note.id}
+                title={note.title}
+                description={note.description}
+                dateFormatted={note.last_updated}
+                noteDeletion={noteDeletion}
+              />
+            ))}
           </div>
           {notesData.length > 9 && (
             <div className="flex flex-row justify-center items-center">
