@@ -1,8 +1,5 @@
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
-import type { NextRequest } from "next/server";
-import type { Database } from "@/types/supabase.types";
 
 export default authMiddleware({
   publicRoutes: ["/"],
