@@ -4,23 +4,23 @@ import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import type { NextRequest } from "next/server";
 import type { Database } from "@/types/supabase.types";
 
-
 export default authMiddleware({
   publicRoutes: ["/"],
+  debug: true,
   afterAuth(auth, req, evt) {
     // If the user is logged in and trying to access a protected route, allow them to access route
     if (auth.userId && !auth.isPublicRoute) {
-      console.log("user is logged in")
+      console.log("user is logged in");
       return NextResponse.next();
     }
     // Handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
-      console.log("user is not authenticated, redirecting to login")
+      console.log("user is not authenticated, redirecting to login");
       return redirectToSignIn({ returnBackUrl: req.url });
     }
 
     // Allow users visiting public routes to access them
-    console.log("going to a public route")
+    console.log("going to a public route");
     return NextResponse.next();
   },
 });
