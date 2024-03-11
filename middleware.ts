@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export default authMiddleware({
   publicRoutes: ["/"],
-  debug: true,
+  debug: false,
   afterAuth(auth, req, evt) {
     // If the user is logged in and trying to access a protected route, allow them to access route
     if (auth.userId && !auth.isPublicRoute) {

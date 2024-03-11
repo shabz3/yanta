@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import BackIcon from "../icons/BackIcon";
 import { useDebouncedCallback } from "use-debounce";
-import Link from "next/link";
 
 export default function Note({
   noteId,
@@ -34,9 +33,6 @@ export default function Note({
   );
   const [noTitleText, setNoTitleText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  // TODO: figure out pending and replace isSaving with pending
-  console.log(`the state of isSaving is: ${isSaving}`)
-  const { pending } = useFormStatus();
   useEffect(() => {
     if (title === "") {
       setNoTitleText("Your note must have a title");
@@ -45,18 +41,19 @@ export default function Note({
     }
   }, [title]);
 
+
   const debouncedTitle = useDebouncedCallback(async () => {
     if (title !== "") {
-      console.log("title is: ", title);
       await changeTitle(title, noteId);
     }
-    setIsSaving(false);
+    setIsSaving(false)
   }, 3000);
   const debouncedDescription = useDebouncedCallback(async () => {
+    console.log("i am being printed");
     if (title !== "") {
       await changeDescription(title, description, noteId);
     }
-    setIsSaving(false);
+    setIsSaving(false)
   }, 3000);
 
   function GoBackButton() {
